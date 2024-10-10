@@ -291,6 +291,7 @@
   background-color: var(--link-color-active-bg);
   color: var(--link-color-active);
 }
+
 .projects-section {
   flex: 2;
   background-color: var(--projects-section);
@@ -682,7 +683,7 @@
   position: absolute;
   right: 0;
   top: 58px;
-  background-color: var(--message-btn);
+  background-color: var(--app-container);
   border: none;
   color: var(--main-color);
   display: flex;
