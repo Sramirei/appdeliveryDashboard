@@ -1,21 +1,21 @@
 import React, { useState } from "react";
 import "./style.css";
 
-//Assets
-import logo from "../../assets/Login/ofin.png";
+import logo from "../../assets/icons/main-icon.png";
+import Mockup1 from "../../assets/images/Mockup1.png";
 
 //Components
 import LoginForm from "./LoginForm";
 import RestarPasswordForm from "./RestarPasswordForm";
 
 const Login = () => {
-  const [form, setForm] = useState("login"); //Cambiar formulario de Login o restaurar contraseña
+  const [form, setForm] = useState("login");
   return (
     <>
       <div class="form-wrapper">
         <div class="form-side">
           <a href="#" title="Logo">
-            <img src={logo} class="logo" alt="Ofin" />
+            <img src={logo} class="logo" alt="Menu" />
           </a>
           {form === "restart" ? (
             <RestarPasswordForm changeForm={setForm} />
@@ -24,7 +24,7 @@ const Login = () => {
           )}
         </div>
         <div class="info-side">
-          <img src="/image.pnmg" alt="Mock" class="mockup" />
+          <img src={Mockup1} alt="Mock" class="mockup" />
         </div>
       </div>
     </>

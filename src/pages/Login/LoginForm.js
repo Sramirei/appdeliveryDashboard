@@ -1,8 +1,8 @@
 import React from "react";
 import "./style.css";
 
-import googleLogo from "../../assets/Login/google.png";
-import appleLogo from "../../assets/Login/apple.png";
+import googleLogo from "../../assets/icons/google.png";
+import appleLogo from "../../assets/icons/apple.png";
 
 const LoginForm = ({ changeForm }) => {
   return (

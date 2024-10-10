@@ -1,7 +1,11 @@
-@import url("https://fonts.googleapis.com/css?family=DM+Sans:400,500,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&display=swap");
+
+@import url("https://fonts.cdnfonts.com/css/garet");
+
 * {
   box-sizing: border-box;
 }
+
 html,
 body {
   width: 100%;
@@ -9,47 +13,142 @@ body {
   margin: 0;
 }
 body {
-  font-family: "DM Sans", sans-serif;
+  font-family: var(--font-primary) !important;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+  font-variation-settings: "wdth" 100;
   overflow: hidden;
   background-color: var(--app-container);
 }
 
-:root {
-  --app-container: #f3f6fd;
-  --main-color: #1f1c2e;
-  --secondary-color: #4a4a4a;
-  --link-color: #1f1c2e;
-  --link-color-hover: #c3cff4;
-  --link-color-active: #fff;
-  --link-color-active-bg: #1f1c2e;
-  --projects-section: #fff;
-  --message-box-hover: #fafcff;
-  --message-box-border: #e9ebf0;
-  --more-list-bg: #fff;
-  --more-list-bg-hover: #f6fbff;
-  --more-list-shadow: rgba(209, 209, 209, 0.4);
-  --button-bg: #1f1c24;
-  --search-area-bg: #fff;
-  --star: #1ff1c2 e;
-  --message-btn: #fff;
+/* Encabezados */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-primary) !important;
+  margin: 0;
+  padding: 0;
 }
+
+/* Párrafos y textos generales */
+p,
+span,
+button {
+  font-family: var(--font-primary) !important;
+}
+
+/* Links */
+a {
+  font-family: var(--font-secondary) !important;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Otros elementos que pueden usar la fuente secundaria */
+nav,
+footer,
+.menu,
+.sidebar {
+  font-family: var(--font-secondary) !important;
+}
+
+:root {
+  --font-primary: "Archivo", sans-serif; /* Fuente Primaria */
+  --font-secondary: "Garet", sans-serif; /* Fuente secundaria */
+  --app-container: #f9f9f9; /* Fondo claro para áreas generales */
+  --main-color: #ff6711; /* Color principal */
+  --secondary-color: #4fc8dc; /* Color secundario */
+  --text-color: #000000; /* Texto principal */
+  --link-color: #ff6711; /* Color de enlaces */
+  --link-color-hover: #4fc8dc; /* Color de hover en enlaces */
+  --link-color-active: #ffffff; /* Color de enlaces activos */
+  --link-color-active-bg: #ff6711; /* Fondo de enlaces activos */
+  --projects-section: #ffffff; /* Sección de proyectos */
+  --message-box-hover: #f1f1f1; /* Fondo de caja de mensaje hover */
+  --message-box-border: #e0e0e0; /* Borde de cajas de mensajes */
+  --more-list-bg: #ffffff; /* Fondo de listas */
+  --more-list-bg-hover: #f0f0f0; /* Fondo hover en listas */
+  --more-list-shadow: rgba(255, 103, 17, 0.4); /* Sombra de listas */
+  --button-bg: #ff6711; /* Fondo de botones */
+  --button-text: #ffffff; /* Texto de los botones */
+  --search-area-bg: #ffffff; /* Fondo del área de búsqueda */
+  --star: #ffd700; /* Color de estrellas o destacados */
+  --message-btn: #4fc8dc; /* Botones de mensaje */
+  --main-color-card: #dbf6fd;
+}
+
 .dark:root {
-  --app-container: #1f1d2b;
-  --app-container: #111827;
-  --main-color: #fff;
-  --secondary-color: rgba(255, 255, 255, 0.8);
-  --projects-section: #1f2937;
-  --link-color: rgba(255, 255, 255, 0.8);
-  --link-color-hover: rgba(195, 207, 244, 0.1);
-  --link-color-active-bg: rgba(195, 207, 244, 0.2);
-  --button-bg: #1f2937;
-  --search-area-bg: #1f2937;
-  --message-box-hover: #243244;
-  --message-box-border: rgba(255, 255, 255, 0.1);
-  --star: #ffd92c;
-  --light-font: rgba(255, 255, 255, 0.8);
-  --more-list-bg: #2f3142;
-  --more-list-bg-hover: rgba(195, 207, 244, 0.1);
-  --more-list-shadow: rgba(195, 207, 244, 0.1);
-  --message-btn: rgba(195, 207, 244, 0.1);
+  --font-primary: "Archivo", sans-serif; /* Fuente Primaria */
+  --font-secondary: "Garet", sans-serif; /* Fuente secundaria */
+  --app-container: #1f1f1f; /* Fondo oscuro para áreas generales */
+  --main-color: #ff6711; /* Color principal en modo oscuro */
+  --secondary-color: #4fc8dc; /* Color secundario */
+  --text-color: #ffffff; /* Texto en modo oscuro */
+  --projects-section: #2b2b2b; /* Fondo de sección de proyectos */
+  --link-color: #4fc8dc; /* Color de enlaces */
+  --link-color-hover: rgba(79, 200, 220, 0.7); /* Color hover en enlaces */
+  --link-color-active-bg: rgba(
+    79,
+    200,
+    220,
+    0.2
+  ); /* Fondo de enlaces activos */
+  --button-bg: #ff6711; /* Fondo de botones */
+  --button-text: #ffffff; /* Texto en botones */
+  --search-area-bg: #2b2b2b; /* Fondo del área de búsqueda */
+  --message-box-hover: #2e2e2e; /* Fondo hover en cajas de mensajes */
+  --message-box-border: rgba(
+    255,
+    255,
+    255,
+    0.1
+  ); /* Borde de cajas de mensajes */
+  --star: #ffd700; /* Color de estrellas o destacados */
+  --more-list-bg: #3b3b3b; /* Fondo de listas */
+  --more-list-bg-hover: rgba(79, 200, 220, 0.1); /* Fondo hover en listas */
+  --more-list-shadow: rgba(79, 200, 220, 0.2); /* Sombra de listas */
+  --message-btn: #4fc8dc; /* Botones de mensaje */
+}
+
+/* Pantallas grandes (escritorio) */
+@media only screen and (min-width: 1200px) {
+  body {
+    font-size: 18px;
+  }
+}
+
+/* Laptops y pantallas medianas */
+@media only screen and (max-width: 1199px) and (min-width: 992px) {
+  body {
+    font-size: 16px;
+  }
+}
+
+/* Tablets y pantallas pequeñas */
+@media only screen and (max-width: 991px) and (min-width: 768px) {
+  body {
+    font-size: 15px;
+  }
+}
+
+/* Teléfonos móviles grandes */
+@media only screen and (max-width: 767px) and (min-width: 576px) {
+  body {
+    font-size: 14px;
+  }
+}
+
+/* Teléfonos móviles pequeños */
+@media only screen and (max-width: 575px) {
+  body {
+    font-size: 13px;
+    padding: 10px;
+  }
 }

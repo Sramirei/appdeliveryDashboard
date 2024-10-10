@@ -291,8 +291,7 @@ const Home = () => {
           {/* ☝aqui va el menu ☝*/}
 
           {/* 👇aqui va las secciones 👇*/}
-
-          {/* <div class="projects-section">
+          <div class="projects-section">
             <div class="projects-section-header">
               <p>Projects</p>
               <p class="time">December, 12</p>
@@ -433,6 +432,9 @@ const Home = () => {
               </div>
             </div>
           </div>
+          {/* ☝aqui va las secciones ☝*/}
+
+          {/* 👇aqui va los mensajes👇*/}
           <div class="messages-section">
             <button class="messages-close">
               <svg
@@ -596,9 +598,8 @@ const Home = () => {
                 </div>
               </div>
             </div>
-          </div> */}
-
-          {/* ☝aqui va las secciones ☝*/}
+          </div>
+          {/* ☝aqui va los mensajes☝*/}
         </div>
       </div>
     </>

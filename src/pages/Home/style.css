@@ -91,7 +91,7 @@
   width: 100%;
   max-width: 480px;
   color: var(--light-font);
-  box-shadow: 0 2px 6px 0 rgba(136, 148, 171, 0.2),
+  box-shadow: 0 2px 6px 0 var(--more-list-shadow),
     0 24px 20px -24px rgba(71, 82, 107, 0.1);
   overflow: hidden;
 }
@@ -192,13 +192,14 @@
   left: 76%;
   margin: 0px auto;
   position: absolute;
-  background: var(--bg-white);
+  background: var(--app-container);
   border-radius: 0.5rem;
   display: flex;
   overflow: hidden;
   flex-direction: column;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  box-shadow: var(--more-list-shadow) 0px 2px 8px 0px;
   animation: fadeInAnimation ease-in-out 0.5s forwards;
+  z-index: 999;
 }
 
 .dropdown__wrapper h2 {
@@ -546,7 +547,6 @@
   flex: 1;
 }
 .project-box {
-  --main-color-card: #dbf6fd;
   border-radius: 30px;
   padding: 16px;
   background-color: var(--main-color-card);
@@ -584,24 +584,6 @@
   background-color: transparent;
   border: none;
   flex-shrink: 0;
-  /*&:after, &:before {
-           content: '';
-           position: absolute;
-           width: 6px;
-           height: 6px;
-           border-radius: 50%;
-           background-color: var(--main-color);
-           opacity: .8;
-           left: 50%;
-           transform: translatex(-50%);
-      }
-       &:before {
-           top: 0;
-      }
-       &:after {
-           bottom: 0;
-      }
-      */
 }
 .more-wrapper {
   position: relative;
@@ -627,7 +609,7 @@
   height: 4px;
   border-radius: 6px;
   overflow: hidden;
-  background-color: #fff;
+  background-color: var(--link-color-active);
   margin: 8px 0;
 }
 .box-progress-header {
