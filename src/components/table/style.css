@@ -1,0 +1,140 @@
+.table-widget {
+  border-radius: 1rem;
+  background: var(--projects-section);
+  padding: 1.5rem;
+  text-align: left;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #ff6711 #f1f1f1;
+}
+
+.table-widget::-webkit-scrollbar {
+  width: 8px;
+}
+
+.table-widget::-webkit-scrollbar-thumb {
+  background-color: #ff6711;
+  border-radius: 10px;
+}
+
+.table-widget table {
+  max-width: fit-content;
+  border-collapse: collapse;
+}
+
+.table-widget caption {
+  font-size: 1.12rem;
+  font-weight: 700;
+  text-align: left;
+  margin: 0.5rem 0px;
+}
+
+.table-widget th {
+  padding: 1.25rem 1rem;
+  font-size: 0.875rem;
+  color: var(--text-color);
+}
+
+.table-widget thead {
+  border-top: 2px solid #edeef1;
+}
+
+.table-widget tfoot {
+  margin-top: 1rem;
+  border-top: 2px solid #edeef1;
+}
+
+.table-widget td {
+  padding: 0.5rem 1rem;
+  vertical-align: middle;
+}
+
+.table-widget tbody tr {
+  cursor: pointer;
+}
+
+.table-widget tbody tr:nth-child(odd) {
+  background: var(--odd-row);
+}
+
+.table-widget tbody tr:hover {
+  background: #e2ecff;
+}
+
+.table-row-count {
+  font-size: 0.8rem;
+  font-weight: 700;
+  background: var(--gray-mid);
+  padding: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  margin-left: 1rem;
+  border-radius: 0.5rem;
+}
+
+.team-member-profile {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.profile-info__name {
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.team-member-profile img {
+  width: 3.125rem;
+  height: 3.125rem;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.status {
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  font-weight: 700;
+}
+
+.status--active {
+  background: #eafef3;
+  color: #2ecc71;
+}
+
+.status--inactive {
+  background: #fff6e5;
+  color: #f4bd50;
+}
+
+.table-widget {
+  min-height: 5rem;
+}
+
+.pagination {
+  list-style-type: none;
+  display: flex;
+  gap: 1rem;
+  padding: 0;
+}
+
+.pagination a {
+  display: block !important;
+  color: var(--main-color) !important;
+  font-size: 16px !important;
+  text-decoration: none !important;
+  font-weight: 700 !important;
+  padding: 0.75rem 1rem !important;
+  border-radius: 0.5rem !important;
+}
+
+.pagination a:hover,
+a.active {
+  background: var(--link-color-hover) !important;
+  text-decoration: underline !important;
+}

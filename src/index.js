@@ -5,6 +5,7 @@ import App from "./App";
 import { I18nextProvider } from "react-i18next";
 import i18next from "i18next";
 import reportWebVitals from "./reportWebVitals";
+import { ChakraProvider } from "@chakra-ui/react";
 
 //Traducciones
 // import navbar_es from "./translations/es/navbar.json";
@@ -27,7 +28,9 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <I18nextProvider i18n={i18next}>
-      <App />
+      <ChakraProvider>
+        <App />
+      </ChakraProvider>
     </I18nextProvider>
   </React.StrictMode>
 );
