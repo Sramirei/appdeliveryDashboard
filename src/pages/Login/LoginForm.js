@@ -1,13 +1,40 @@
-import React from "react";
+import React, { useContext } from "react";
+import UserContext from "../../context/userContext";
 import "./style.css";
 
 import googleLogo from "../../assets/icons/google.png";
 import appleLogo from "../../assets/icons/apple.png";
 
+import { useForm } from "react-hook-form";
+import { Navigate } from "react-router-dom";
+
 const LoginForm = ({ changeForm }) => {
+  const { login } = useContext(UserContext);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ mode: "onChange" });
+
+  const handleLogin = async (data) => {
+    const body = {
+      correo: data.email,
+      password: data.password,
+    };
+
+    const user = await login(body);
+    if (user.success === true) {
+      <Navigate to="/home" replace />;
+    }
+  };
+
   return (
     <>
-      <form class="my-form">
+      <form
+        class="my-form"
+        onSubmit={handleSubmit(handleLogin)}
+        autoComplete="off"
+      >
         <div class="form-welcome-row">
           <h1>Create your account &#x1F44F;</h1>
         </div>
@@ -32,7 +59,13 @@ const LoginForm = ({ changeForm }) => {
               name="email"
               autocomplete="off"
               placeholder="Your Email"
-              required
+              {...register("email", {
+                required: "El campo es requerido",
+                pattern: {
+                  value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                  message: "Ingresa un Correo valido",
+                },
+              })}
             />
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -51,6 +84,9 @@ const LoginForm = ({ changeForm }) => {
             </svg>
           </label>
         </div>
+        {errors.email && (
+          <span className="alert-text">{errors.email.message}</span>
+        )}
         <div class="text-field">
           <label for="password">
             Password:
@@ -59,10 +95,15 @@ const LoginForm = ({ changeForm }) => {
               type="password"
               name="password"
               placeholder="Your Password"
-              title="Minimum 6 characters at 
-                                    least 1 Alphabet and 1 Number"
-              pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$"
-              required
+              title="Minimum 6 characters at least 1 Alphabet and 1 Number"
+              {...register("password", {
+                required: "El campo es requerido",
+                // pattern: {
+                //   value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,}$/,
+                //   message:
+                //     "Mínimo 5 caracteres, al menos 1 alfabeto y 1 número.",
+                // },
+              })}
             />
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -82,9 +123,12 @@ const LoginForm = ({ changeForm }) => {
             </svg>
           </label>
         </div>
-        <a type="submit" class="my-form__button">
+        {errors.password && (
+          <span className="alert-text">{errors.password.message}</span>
+        )}
+        <button type="submit" class="my-form__button">
           Login
-        </a>
+        </button>
         <div class="my-form__actions">
           <a
             type="button"

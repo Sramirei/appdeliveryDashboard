@@ -59,6 +59,10 @@ footer,
   font-family: var(--font-secondary) !important;
 }
 
+.alert-text {
+  color: red;
+}
+
 :root {
   --font-primary: "Archivo", sans-serif; /* Fuente Primaria */
   --font-secondary: "Garet", sans-serif; /* Fuente secundaria */

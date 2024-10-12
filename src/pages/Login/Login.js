@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./style.css";
+import { Navigate } from "react-router-dom";
 
 import logo from "../../assets/icons/main-icon.png";
 import Mockup1 from "../../assets/images/Mockup1.png";
@@ -8,8 +9,13 @@ import Mockup1 from "../../assets/images/Mockup1.png";
 import LoginForm from "./LoginForm";
 import RestarPasswordForm from "./RestarPasswordForm";
 
-const Login = () => {
+const Login = ({ session }) => {
   const [form, setForm] = useState("login");
+
+  if (session) {
+    return <Navigate to="/home" replace />;
+  }
+
   return (
     <>
       <div class="form-wrapper">
