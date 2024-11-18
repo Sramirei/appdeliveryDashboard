@@ -725,6 +725,104 @@
   transform: translateY(50%) rotate(-45deg);
 }
 
+.userMenu__name {
+  font-size: 14px;
+  font-weight: 700;
+  text-align: left;
+  color: var(--text);
+}
+
+.userMenu__email {
+  color: var(--text-gray);
+}
+
+.userMenu__dropdown {
+  width: 240px;
+  top: 88px;
+  right: 16px;
+  position: absolute;
+  background: var(--app-container);
+  border-radius: 8px;
+  border: 1px solid var(--text-gray);
+  box-shadow: var(--more-list-shadow) 0px 2px 8px 0px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  animation: fadeOut ease-in-out 0.3s forwards;
+  z-index: 999;
+}
+
+.userMenu__fadeIn {
+  animation: fadeIn ease-in-out 0.3s forwards;
+}
+
+.userMenu__fadeOut {
+  animation: fadeOut ease-in-out 0.3s forwards;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    visibility: hidden;
+    width: 160px;
+  }
+  100% {
+    opacity: 1;
+    visibility: visible;
+    width: 240px;
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+    width: 240px;
+    visibility: visible;
+  }
+  100% {
+    opacity: 0;
+    width: 160px;
+    visibility: hidden;
+  }
+}
+
+.userMenu__info {
+  padding: 12px;
+}
+
+.userMenu__divider {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+nav > ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  gap: 4px;
+}
+
+nav > ul > li {
+  height: 40px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  padding-left: 8px;
+  width: 100%;
+}
+
+nav > ul > li > img {
+  height: 24px;
+  width: 24px;
+}
+
+nav > ul > li:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 @media screen and (max-width: 980px) {
   .project-boxes.jsGridView .project-box-wrapper {
     width: 50%;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./style.css";
 import { Navigate } from "react-router-dom";
 
@@ -12,16 +12,17 @@ import RestarPasswordForm from "./RestarPasswordForm";
 const Login = ({ session }) => {
   const [form, setForm] = useState("login");
 
-  if (session) {
-    return <Navigate to="/home" replace />;
-  }
+  useEffect(() => {
+    localStorage.clear();
+    sessionStorage.clear();
+  }, []);
 
   return (
     <>
-      <div class="form-wrapper">
-        <div class="form-side">
+      <div className="form-wrapper">
+        <div className="form-side">
           <a href="#" title="Logo">
-            <img src={logo} class="logo" alt="Menu" />
+            <img src={logo} className="logo" alt="Menu" />
           </a>
           {form === "restart" ? (
             <RestarPasswordForm changeForm={setForm} />
@@ -29,8 +30,8 @@ const Login = ({ session }) => {
             <LoginForm changeForm={setForm} />
           )}
         </div>
-        <div class="info-side">
-          <img src={Mockup1} alt="Mock" class="mockup" />
+        <div className="info-side">
+          <img src={Mockup1} alt="Mock" className="mockup" />
         </div>
       </div>
     </>

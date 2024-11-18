@@ -6,10 +6,12 @@ import googleLogo from "../../assets/icons/google.png";
 import appleLogo from "../../assets/icons/apple.png";
 
 import { useForm } from "react-hook-form";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const LoginForm = ({ changeForm }) => {
   const { login } = useContext(UserContext);
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -24,21 +26,27 @@ const LoginForm = ({ changeForm }) => {
 
     const user = await login(body);
     if (user.success === true) {
-      <Navigate to="/home" replace />;
+      Swal.fire({
+        title: "success!",
+        text: "Sesion iniciada Correctamente",
+        icon: "success",
+        confirmButtonText: "Ok",
+      });
+      navigate("/home", { replace: true });
     }
   };
 
   return (
     <>
       <form
-        class="my-form"
+        className="my-form"
         onSubmit={handleSubmit(handleLogin)}
         autoComplete="off"
       >
-        <div class="form-welcome-row">
+        <div className="form-welcome-row">
           <h1>Create your account &#x1F44F;</h1>
         </div>
-        <div class="socials-row">
+        <div className="socials-row">
           <a href="#" title="Use Google">
             <img src={googleLogo} alt="Google" />
             Use Google
@@ -47,17 +55,18 @@ const LoginForm = ({ changeForm }) => {
             <img src={appleLogo} alt="Apple" /> Use Apple
           </a>
         </div>
-        <div class="divider">
-          <div class="divider-line"></div> Or <div class="divider-line"></div>
+        <div className="divider">
+          <div className="divider-line"></div> Or{" "}
+          <div className="divider-line"></div>
         </div>
-        <div class="text-field">
-          <label for="email">
+        <div className="text-field">
+          <label htmlFor="email">
             Email:
             <input
               type="email"
               id="email"
               name="email"
-              autocomplete="off"
+              autoComplete="off"
               placeholder="Your Email"
               {...register("email", {
                 required: "El campo es requerido",
@@ -72,11 +81,11 @@ const LoginForm = ({ changeForm }) => {
               width="24"
               height="24"
               viewBox="0 0 24 24"
-              stroke-width="2"
+              strokeWidth="2"
               stroke="currentColor"
               fill="none"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             >
               <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
               <path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path>
@@ -87,8 +96,8 @@ const LoginForm = ({ changeForm }) => {
         {errors.email && (
           <span className="alert-text">{errors.email.message}</span>
         )}
-        <div class="text-field">
-          <label for="password">
+        <div className="text-field">
+          <label htmlFor="password">
             Password:
             <input
               id="password"
@@ -98,11 +107,6 @@ const LoginForm = ({ changeForm }) => {
               title="Minimum 6 characters at least 1 Alphabet and 1 Number"
               {...register("password", {
                 required: "El campo es requerido",
-                // pattern: {
-                //   value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,}$/,
-                //   message:
-                //     "Mínimo 5 caracteres, al menos 1 alfabeto y 1 número.",
-                // },
               })}
             />
             <svg
@@ -110,11 +114,11 @@ const LoginForm = ({ changeForm }) => {
               width="24"
               height="24"
               viewBox="0 0 24 24"
-              stroke-width="2"
+              strokeWidth="2"
               stroke="currentColor"
               fill="none"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             >
               <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
               <path d="M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6z"></path>
@@ -126,10 +130,10 @@ const LoginForm = ({ changeForm }) => {
         {errors.password && (
           <span className="alert-text">{errors.password.message}</span>
         )}
-        <button type="submit" class="my-form__button">
+        <button type="submit" className="my-form__button">
           Login
         </button>
-        <div class="my-form__actions">
+        <div className="my-form__actions">
           <a
             type="button"
             title="Reset Password"

@@ -5,6 +5,7 @@ import { ProtectedRoute } from "./components/ProtectedRoute";
 
 import Login from "./pages/Login/Login";
 import Home from "./pages/Home/Home";
+import ChangePassword from "./pages/changePassword/ChangePassword";
 
 const App = () => {
   const { session } = useContext(UserContext);
@@ -13,6 +14,10 @@ const App = () => {
       <Routes>
         <Route index element={<Login session={session} />} />
         <Route path="/" element={<Login />} />
+        <Route
+          path="/restartPassword/:id/:token"
+          element={<ChangePassword />}
+        />
         <Route element={<ProtectedRoute isAllowed={!!session} />}>
           <Route path="/home" element={<Home session={session} />} />
         </Route>

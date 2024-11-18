@@ -18,9 +18,13 @@ const Home = ({ session }) => {
   });
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [dropdownVisible, setDropdownVisible] = useState(false);
+  const [selectedComponent, setSelectedComponent] = useState(null);
+  const [isUserMenuVisible, setUserMenuVisible] = useState(false);
+
   const notificationBtnRef = useRef(null);
   const dropdownRef = useRef(null);
-  const [selectedComponent, setSelectedComponent] = useState(null);
+  const userMenuRef = useRef(null);
+  const profileRef = useRef(null);
 
   const { handleLogout } = useContext(UserContext);
 
@@ -43,6 +47,10 @@ const Home = ({ session }) => {
 
   const toggleDropdown = () => {
     setDropdownVisible((prev) => !prev);
+  };
+
+  const toggleUserMenu = () => {
+    setUserMenuVisible((prev) => !prev);
   };
 
   const changeDarkMode = () => {
@@ -86,6 +94,23 @@ const Home = ({ session }) => {
   }, []);
 
   useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        userMenuRef.current &&
+        !userMenuRef.current.contains(event.target) &&
+        !profileRef.current.contains(event.target)
+      ) {
+        setUserMenuVisible(false);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
+
+  useEffect(() => {
     if (isDarkMode) {
       const cleanup = changeDarkMode();
       return cleanup;
@@ -103,8 +128,8 @@ const Home = ({ session }) => {
           <div className="app-header-left">
             <span className="app-icon"></span>
             <p className="app-name">Portfolio</p>
-            <div class="menu-btn" id="button" onClick={openMenu}>
-              <div class="line"></div>
+            <div className="menu-btn" id="button" onClick={openMenu}>
+              <div className="line"></div>
             </div>
           </div>
           <div className="app-header-right">
@@ -119,9 +144,9 @@ const Home = ({ session }) => {
                 className="moon"
                 fill="none"
                 stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
                 width="24"
                 height="24"
                 viewBox="0 0 24 24"
@@ -139,9 +164,9 @@ const Home = ({ session }) => {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="3"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="3"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 //   className="feather feather-plus"
               >
                 <line x1="12" y1="5" x2="12" y2="19" />
@@ -162,9 +187,9 @@ const Home = ({ session }) => {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 className="feather feather-bell"
               >
                 <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
@@ -219,10 +244,60 @@ const Home = ({ session }) => {
             </div>
             {/* ☝Notiificaciones☝ */}
 
-            <button className="profile-btn">
+            <button
+              className="profile-btn"
+              ref={profileRef}
+              onClick={toggleUserMenu}
+            >
               <img src="https://assets.codepen.io/3306515/IMG_2025.jpg" />
               <span>Aybüke C.</span>
             </button>
+
+            {/* Menu Usuario 👇 */}
+            {isUserMenuVisible && (
+              <div
+                ref={userMenuRef}
+                className={`userMenu__dropdown ${
+                  isUserMenuVisible ? "userMenu__fadeIn" : "userMenu__fadeOut"
+                }`}
+              >
+                <div className="userMenu__info">
+                  <div className="userMenu__name">Joe Doe</div>
+                  <div className="userMenu__email">joe.doe@atheros.ai</div>
+                </div>
+                <hr className="userMenu__divider" />
+                <nav>
+                  <ul>
+                    <li>
+                      <img src="assets/profile.svg" alt="Profile" /> My Profile
+                    </li>
+                    <li>
+                      <img src="assets/settings.svg" alt="Settings" /> Settings
+                    </li>
+                  </ul>
+                  <hr className="userMenu__divider" />
+                  <ul>
+                    <li>
+                      <img src="assets/tutorials.svg" alt="Tutorials" />{" "}
+                      Tutorials
+                    </li>
+                    <li>
+                      <img src="assets/help.svg" alt="Help" /> Help Center
+                    </li>
+                  </ul>
+                  <hr className="userMenu__divider" />
+                  <ul>
+                    <li>
+                      <img src="assets/premium.svg" alt="Premium" /> Go Premium
+                    </li>
+                    <li style={{ color: "#E3452F" }} onClick={handleLogout}>
+                      <img src="assets/logout.svg" alt="Log Out" /> Log Out
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+            )}
+            {/* ☝Menu Usuario☝ */}
           </div>
           <button className="messages-btn" onClick={openMessages}>
             <svg
@@ -232,9 +307,9 @@ const Home = ({ session }) => {
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
               className="feather feather-message-circle"
             >
               <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
@@ -258,9 +333,9 @@ const Home = ({ session }) => {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 className="feather feather-home"
               >
                 <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
@@ -284,9 +359,9 @@ const Home = ({ session }) => {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 className="feather feather-x-circle"
               >
                 <circle cx="12" cy="12" r="10" />
@@ -308,7 +383,7 @@ const Home = ({ session }) => {
                     <div className="name">Stephanie</div>
                     <div className="star-checkbox">
                       <input type="checkbox" id="star-1" />
-                      <label for="star-1">
+                      <label htmlFor="star-1">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="20"
@@ -316,9 +391,9 @@ const Home = ({ session }) => {
                           viewBox="0 0 24 24"
                           fill="none"
                           stroke="currentColor"
-                          stroke-width="2"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
                           className="feather feather-star"
                         >
                           <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
@@ -343,7 +418,7 @@ const Home = ({ session }) => {
                     <div className="name">Mark</div>
                     <div className="star-checkbox">
                       <input type="checkbox" id="star-2" />
-                      <label for="star-2">
+                      <label htmlFor="star-2">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="20"
@@ -351,9 +426,9 @@ const Home = ({ session }) => {
                           viewBox="0 0 24 24"
                           fill="none"
                           stroke="currentColor"
-                          stroke-width="2"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
                           className="feather feather-star"
                         >
                           <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
@@ -378,7 +453,7 @@ const Home = ({ session }) => {
                     <div className="name">David</div>
                     <div className="star-checkbox">
                       <input type="checkbox" id="star-3" />
-                      <label for="star-3">
+                      <label htmlFor="star-3">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="20"
@@ -386,9 +461,9 @@ const Home = ({ session }) => {
                           viewBox="0 0 24 24"
                           fill="none"
                           stroke="currentColor"
-                          stroke-width="2"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
                           className="feather feather-star"
                         >
                           <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
@@ -413,7 +488,7 @@ const Home = ({ session }) => {
                     <div className="name">Jessica</div>
                     <div className="star-checkbox">
                       <input type="checkbox" id="star-4" />
-                      <label for="star-4">
+                      <label htmlFor="star-4">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="20"
@@ -421,9 +496,9 @@ const Home = ({ session }) => {
                           viewBox="0 0 24 24"
                           fill="none"
                           stroke="currentColor"
-                          stroke-width="2"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
                           className="feather feather-star"
                         >
                           <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />

@@ -58,6 +58,7 @@ const UserProvider = ({ children }) => {
         const user = response.data;
         localStorage.setItem("user", JSON.stringify(user.user));
         sessionStorage.setItem("token", user.token);
+        setSession(user);
         return {
           success: true,
           user,
