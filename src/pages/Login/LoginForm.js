@@ -25,7 +25,7 @@ const LoginForm = ({ changeForm }) => {
     };
 
     const user = await login(body);
-    if (user.success === true) {
+    if (user?.success === true) {
       Swal.fire({
         title: "success!",
         text: "Sesion iniciada Correctamente",

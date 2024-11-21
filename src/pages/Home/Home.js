@@ -4,9 +4,8 @@ import "./style.css";
 import UserContext from "../../context/userContext";
 import { Navigate } from "react-router-dom";
 
-import { Projects } from "./views/Projects";
-import Tabla from "./views/tabla";
 import Notification from "../../components/notification/Notification";
+import Orders from "./views/Orders";
 
 const Home = ({ session }) => {
   const [showMessages, setShowMessages] = useState(false);
@@ -20,6 +19,7 @@ const Home = ({ session }) => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [selectedComponent, setSelectedComponent] = useState(null);
   const [isUserMenuVisible, setUserMenuVisible] = useState(false);
+  const [userData, setUserData] = useState({});
 
   const notificationBtnRef = useRef(null);
   const dropdownRef = useRef(null);
@@ -117,6 +117,13 @@ const Home = ({ session }) => {
     }
   }, [isDarkMode]);
 
+  useEffect(() => {
+    if (session) {
+      const user = localStorage.getItem("user");
+      setUserData(JSON.parse(user));
+    }
+  }, []);
+
   if (!session) {
     return <Navigate to="/" replace />;
   }
@@ -155,7 +162,11 @@ const Home = ({ session }) => {
                 <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
               </svg>
             </button>
-            <button className="add-btn" title="Add New Project">
+            <button
+              className="add-btn"
+              title="Add New Post"
+              style={userData.bussines ? {} : { display: "none" }}
+            >
               <svg
                 className="btn-icon"
                 xmlns="http://www.w3.org/2000/svg"
@@ -249,8 +260,8 @@ const Home = ({ session }) => {
               ref={profileRef}
               onClick={toggleUserMenu}
             >
-              <img src="https://assets.codepen.io/3306515/IMG_2025.jpg" />
-              <span>Aybüke C.</span>
+              <img src={userData?.foto_perfil || ""} alt="user-photo" />
+              <span>{userData?.nombre || "No disponible"}</span>
             </button>
 
             {/* Menu Usuario 👇 */}
@@ -262,8 +273,12 @@ const Home = ({ session }) => {
                 }`}
               >
                 <div className="userMenu__info">
-                  <div className="userMenu__name">Joe Doe</div>
-                  <div className="userMenu__email">joe.doe@atheros.ai</div>
+                  <div className="userMenu__name">
+                    {userData?.nombre || "No disponible"}
+                  </div>
+                  <div className="userMenu__email">
+                    {userData?.correo || "No disponible"}
+                  </div>
                 </div>
                 <hr className="userMenu__divider" />
                 <nav>
@@ -323,7 +338,12 @@ const Home = ({ session }) => {
               type="button"
               className="app-sidebar-link active"
               onClick={() => {
-                handleSideBarClick(<Tabla session={session} />);
+                handleSideBarClick(
+                  <Orders
+                    session={session}
+                    showNotification={showNotification}
+                  />
+                );
               }}
             >
               <svg
@@ -346,7 +366,11 @@ const Home = ({ session }) => {
           {/* ☝aqui va el menu ☝*/}
 
           {/* 👇aqui va las secciones 👇*/}
-          <>{selectedComponent || <Projects />}</>
+          <>
+            {selectedComponent || (
+              <Orders session={session} showNotification={showNotification} />
+            )}
+          </>
           {/* ☝aqui va las secciones ☝*/}
 
           {/* 👇aqui va los mensajes👇*/}

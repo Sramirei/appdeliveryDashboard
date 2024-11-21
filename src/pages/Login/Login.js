@@ -12,10 +12,9 @@ import RestarPasswordForm from "./RestarPasswordForm";
 const Login = ({ session }) => {
   const [form, setForm] = useState("login");
 
-  useEffect(() => {
-    localStorage.clear();
-    sessionStorage.clear();
-  }, []);
+  if (session) {
+    return <Navigate to="/home" replace />;
+  }
 
   return (
     <>
