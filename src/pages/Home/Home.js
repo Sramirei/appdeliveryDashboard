@@ -6,6 +6,7 @@ import { Navigate } from "react-router-dom";
 
 import Notification from "../../components/notification/Notification";
 import Orders from "./views/Orders";
+import Product from "./views/Products/Product";
 
 const Home = ({ session }) => {
   const [showMessages, setShowMessages] = useState(false);
@@ -334,6 +335,34 @@ const Home = ({ session }) => {
         <div className="app-content">
           {/* 👇aqui va el menu 👇*/}
           <div className={`app-sidebar ${showMenu ? "show" : ""}`}>
+            <a
+              type="button"
+              className="app-sidebar-link active"
+              onClick={() => {
+                handleSideBarClick(
+                  <Product
+                    session={session}
+                    showNotification={showNotification}
+                  />
+                );
+              }}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="feather feather-home"
+              >
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                <polyline points="9 22 9 12 15 12 15 22" />
+              </svg>
+            </a>
             <a
               type="button"
               className="app-sidebar-link active"
