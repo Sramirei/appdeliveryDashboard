@@ -978,3 +978,21 @@ nav > ul > li:hover {
     top: 10px;
   }
 }
+.input-rounded {
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 4px 8px;
+  font-size: 12px;
+  flex: 1;
+}
+
+.button-validate {
+  background-color: #ff942e;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 4px 12px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
