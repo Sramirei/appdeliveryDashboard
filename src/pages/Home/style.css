@@ -16,7 +16,7 @@
 }
 .app-content {
   display: flex;
-  height: 100%;
+  height: 100vh;
   overflow: hidden;
   padding: 16px 24px 24px 0;
 }
@@ -279,7 +279,7 @@
   border-radius: 32px;
   padding: 32px 32px 0 32px;
   overflow: hidden;
-  height: 100%;
+  height: 92%;
   display: flex;
   flex-direction: column;
 }
@@ -473,8 +473,12 @@
 }
 .project-boxes {
   margin: 0 -8px;
-  overflow-y: auto;
+  overflow-y: scroll;
 }
+::-webkit-scrollbar {
+  width: 1px;
+}
+
 .project-boxes.jsGridView {
   display: flex;
   flex-wrap: wrap;
@@ -995,4 +999,3 @@ nav > ul > li:hover {
   font-size: 12px;
   cursor: pointer;
 }
-

@@ -16,15 +16,16 @@ import Next from "../../../assets/icons/Next.gif";
 const Orders = ({ session, showNotification }) => {
   const [currentDate, setCurrentDate] = useState("");
   const [stateBussiness, setStateBussiness] = useState(null);
-  const [code,setCode]=useState("");
+  const [code, setCode] = useState("");
   // const [validateCode, setValidateCode] = useState("");
   const [orders, setOrders] = useState([]);
-  
-  
+
   const getDataBussiness = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/negocios/${session.bussines}`
+        `${process.env.REACT_APP_API_URL}/negocios/${
+          session?.bussines || session?.user?.bussines
+        }`
       );
 
       if (response?.data?.code === 1) {
@@ -47,7 +48,9 @@ const Orders = ({ session, showNotification }) => {
     if (stateBussiness === "on") {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/pedidos/all/${session.bussines}`
+          `${process.env.REACT_APP_API_URL}/pedidos/all/${
+            session?.bussines || session?.user?.bussines
+          }`
         );
         if (response?.data?.code === 1) {
           const today = new Date();
@@ -75,7 +78,7 @@ const Orders = ({ session, showNotification }) => {
 
   const startTheDay = async () => {
     const body = {
-      id: session.bussines,
+      id: session?.bussines || session?.user?.bussines,
       openDate: new Date(),
     };
     try {
@@ -99,7 +102,7 @@ const Orders = ({ session, showNotification }) => {
 
   const closeDay = async () => {
     const body = {
-      id: session.bussines,
+      id: session?.bussines || session?.user?.bussines,
       closeDate: new Date(),
     };
     try {
@@ -213,10 +216,13 @@ const Orders = ({ session, showNotification }) => {
 
   const handleChangeStatus = async (idPedido) => {
     try {
-      const response = await axios.put(`${process.env.REACT_APP_API_URL}/pedidos/update/status/${idPedido}`, {
-        id_pedido: idPedido,
-        estado: 2,
-      });
+      const response = await axios.put(
+        `${process.env.REACT_APP_API_URL}/pedidos/update/status/${idPedido}`,
+        {
+          id_pedido: idPedido,
+          estado: 2,
+        }
+      );
       if (response.status === 200) {
         alert("Estado actualizado exitosamente");
       }
@@ -225,6 +231,7 @@ const Orders = ({ session, showNotification }) => {
       alert("Hubo un problema al actualizar el estado");
     }
   };
+
   const getProgressWidth = (estado) => {
     switch (estado) {
       case 1:
@@ -239,7 +246,7 @@ const Orders = ({ session, showNotification }) => {
         return "0px"; // Ancho por defecto si el estado no coincide
     }
   };
-  
+
   const getProgressPercentage = (estado) => {
     switch (estado) {
       case 1:
@@ -254,6 +261,7 @@ const Orders = ({ session, showNotification }) => {
         return "0%"; // Porcentaje por defecto
     }
   };
+
   const validateCode = async (code, id_pedido) => {
     try {
       const response = await axios.get(
@@ -264,7 +272,7 @@ const Orders = ({ session, showNotification }) => {
         setOrders((prevOrders) =>
           prevOrders.map((order) =>
             order.id_pedido === id_pedido
-              ? { ...order, estado: 3, code_delivery: code } 
+              ? { ...order, estado: 3, code_delivery: code }
               : order
           )
         );
@@ -276,7 +284,24 @@ const Orders = ({ session, showNotification }) => {
       alert("Hubo un problema al validar el código.");
     }
   };
-  
+
+  const textState = (state) => {
+    switch (state) {
+      case 1:
+        return "Creado";
+      case 2:
+        return "Pendiente por recogida";
+      case 3:
+        return "En camino";
+      case 4:
+        return "Entregado";
+      case 5:
+        return "Cancelado";
+      default:
+        return "Estado No identificado";
+    }
+  };
+
   return (
     <>
       <div className="projects-section">
@@ -346,25 +371,77 @@ const Orders = ({ session, showNotification }) => {
                       </div>
                       {/* contenido de la cajita */}
                       <div className="project-box-content-header">
-                        <p className="box-content-header"># De Orden: {order.id_pedido}</p>
-                        <p className="box-content-subheader">Total: {order.total}</p>
+                        <p className="box-content-header">
+                          # De Orden: {order.id_pedido}
+                        </p>
+                        <p className="box-content-subheader">
+                          Total: {order.total}
+                        </p>
                         {order.estado === 2 ? (
-                          <div style={{ display: "flex", alignItems: "center", gap: "8px", marginTop: "8%" }}>
-                            <input type="text" className="input-rounded" placeholder="Código de entrega" onChange={(e) => setCode(e.target.value)}/>
-                              <button className="button-validate" onClick={() => validateCode(code,order.id_pedido)}>
-                                Validar
-                              </button>
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "8px",
+                              marginTop: "8%",
+                            }}
+                          >
+                            <input
+                              type="text"
+                              className="input-rounded"
+                              placeholder="Código de entrega"
+                              onChange={(e) => setCode(e.target.value)}
+                            />
+                            <button
+                              className="button-validate"
+                              onClick={() =>
+                                validateCode(code, order.id_pedido)
+                              }
+                            >
+                              Validar
+                            </button>
                           </div>
                         ) : order.estado === 3 ? (
-                          <div style={{ display: "flex", alignItems: "center", gap: "8px", marginTop: "9%" }}>
-                            <p style={{ fontSize: "14px", margin: 0, color: "#4caf50" }}>{order.code_delivery}</p>
-                            <span style={{ color: "#4caf50", fontSize: "16px" }}>✔</span> {/* Chulo de verificado */}
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "8px",
+                              marginTop: "9%",
+                            }}
+                          >
+                            <p
+                              style={{
+                                fontSize: "14px",
+                                margin: 0,
+                                color: "#4caf50",
+                              }}
+                            >
+                              {order.code_delivery}
+                            </p>
+                            <span
+                              style={{ color: "#4caf50", fontSize: "16px" }}
+                            >
+                              ✔
+                            </span>{" "}
+                            {/* Chulo de verificado */}
                           </div>
-                        ): <div style={{ display: "flex", alignItems: "center", gap: "8px", marginTop: "19%" }}></div>}
+                        ) : (
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "8px",
+                              marginTop: "19%",
+                            }}
+                          ></div>
+                        )}
                       </div>
 
                       <div className="box-progress-wrapper">
-                        <p className="box-progress-header">Progress</p>
+                        <p className="box-progress-header">
+                          {textState(order.estado)}
+                        </p>
                         <div className="box-progress-bar">
                           <span
                             className="box-progress"
@@ -374,21 +451,25 @@ const Orders = ({ session, showNotification }) => {
                             }}
                           ></span>
                         </div>
-                        <p className="box-progress-percentage">{getProgressPercentage(order.estado)}</p>
+                        <p className="box-progress-percentage">
+                          {getProgressPercentage(order.estado)}
+                        </p>
                       </div>
                       {/* footer de la cajita */}
                       <div className="project-box-footer">
                         <div className="participants">
                           {stateIcon(order.estado)}
                           {order.estado === 1 ? (
-                          <button 
-                            className="add-participant"
-                            style={{ color: "#ff942e" }}
-                            onClick={() => handleChangeStatus(order.id_pedido)}
-                          >
-                            <img src={Next} alt="Siguiente" />
-                          </button>
-                          ):null}
+                            <button
+                              className="add-participant"
+                              style={{ color: "#ff942e" }}
+                              onClick={() =>
+                                handleChangeStatus(order.id_pedido)
+                              }
+                            >
+                              <img src={Next} alt="Siguiente" />
+                            </button>
+                          ) : null}
                         </div>
                         <div className="days-left" style={{ color: "#ff942e" }}>
                           <relative-time
