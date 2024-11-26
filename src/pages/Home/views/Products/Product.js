@@ -35,10 +35,11 @@ import "../../style.css";
 
 const Product = ({ session, showNotification }) => {
   const [formData, setFormData] = useState({
+    id_producto : 0,
     nombre: '',
     negocio_id: `${session?.bussines || session?.user?.bussines}`,
     descripcion: '',
-    precio: '',
+    precio: 0,
     stock: 0,
     foto: '',
     disponible: false,
@@ -54,6 +55,7 @@ const Product = ({ session, showNotification }) => {
   const [adiciones, setAdiciones] = useState([]);
   const [productos, setProductos] = useState([]);
   const [showForm, setShowForm] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [newItem, setNewItem] = useState(''); // Para agregar nuevos ingredientes/adiciones
   const { isOpen: isIngredienteOpen, onOpen: onIngredienteOpen, onClose: onIngredienteClose } = useDisclosure();
   const { isOpen: isAdicionOpen, onOpen: onAdicionOpen, onClose: onAdicionClose } = useDisclosure();
@@ -73,13 +75,23 @@ const Product = ({ session, showNotification }) => {
       ingredientes: selectedIngredientes,  // Actualizamos los ingredientes seleccionados
       adiciones: selectedAdiciones,        // Actualizamos las adiciones seleccionadas
     }));
+    
     try {
-      // Enviar los datos al backend
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/productos/create`, formData);
-      console.log('Datos del producto enviados:', response.data);
-      if(response.data.cod==1){
-        fetchProducts();
+      if(formData.id_producto!==0){
+        const response = await axios.put(`${process.env.REACT_APP_API_URL}/productos/update/${formData.id_producto}`, formData);
+        console.log('Datos del producto enviados:', response.data);
+        if(response.data.cod==1){
+          fetchProducts();
+        }
+      }else{
+        // Enviar los datos al backend
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/productos/create`, formData);
+        console.log('Datos del producto enviados:', response.data);
+        if(response.data.cod==1){
+          fetchProducts();
+        }
       }
+      
     } catch (error) {
       console.error('Error al crear el producto:', error);
     }
@@ -125,23 +137,33 @@ const Product = ({ session, showNotification }) => {
       console.error('Error al agregar elemento:', error);
     }
   };
-  const handleEdit = (id) => {
+  const handleEdit = async (id) => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/productos/getProductoByIdVariation/${id}`);
+      const { producto, ingredientes, adiciones } = response.data.data;
+
+      // Rellenar el formulario con los datos recibidos
+      setFormData({
+        ...producto,
+        ingredientes: ingredientes,
+        adiciones: adiciones,
+      });
+      const ingredientesIds = ingredientes.map((ing) => ing.id_variation);
+      const adicionesIds = adiciones.map((adi) => adi.id_variation);
+
+      // Actualizar el estado de una sola vez con todos los IDs
+      setSelectedIngredientes(ingredientesIds);
+      setSelectedAdiciones(adicionesIds);
+      
+      setIsLoading(false);
+      setShowForm(true)
+    } catch (error) {
+      console.error("Error fetching product:", error);
+    }
     console.log('Editar producto con ID:', id);
     // Aquí puedes agregar la lógica para editar el producto.
   };
-
-  const handleDelete = async (id) => {
-    try {
-      const response = await axios.delete(`${process.env.REACT_APP_API_URL}/productos/delete/${id}`);
-      if(response.data.code==1){
-        fetchProducts();
-      }
-    } catch (error) {
-      console.error('Error al agregar elemento:', error);
-    }
-    // Aquí puedes agregar la lógica para eliminar el producto.
-  };
-  const toggleIngrediente = (id) => {
+const toggleIngrediente = (id) => {
     if (selectedIngredientes.includes(id)) {
       setSelectedIngredientes(selectedIngredientes.filter((item) => item !== id));
     } else {
@@ -156,6 +178,18 @@ const Product = ({ session, showNotification }) => {
       setSelectedAdiciones([...selectedAdiciones, id]);
     }
   };
+  const handleDelete = async (id) => {
+    try {
+      const response = await axios.delete(`${process.env.REACT_APP_API_URL}/productos/delete/${id}`);
+      if(response.data.code==1){
+        fetchProducts();
+      }
+    } catch (error) {
+      console.error('Error al agregar elemento:', error);
+    }
+    // Aquí puedes agregar la lógica para eliminar el producto.
+  };
+  
   return (
     <>
       <div className="projects-section">
