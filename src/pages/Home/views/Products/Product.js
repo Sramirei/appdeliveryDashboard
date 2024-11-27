@@ -238,7 +238,7 @@ const toggleIngrediente = (id) => {
                 {/* Precio */}
                 <FormControl isRequired>
                   <FormLabel>Precio</FormLabel>
-                  <NumberInput min={0} precision={2}>
+                  <NumberInput min={0}>
                     <NumberInputField
                       name="precio"
                       placeholder="Precio del producto"
