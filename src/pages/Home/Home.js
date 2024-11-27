@@ -5,6 +5,8 @@ import UserContext from "../../context/userContext";
 import { Navigate } from "react-router-dom";
 
 import Notification from "../../components/notification/Notification";
+import Messages from "../../components/messages/Messages";
+import DetailOrder from "../../components/DetailOrder/DetailOrder";
 import Orders from "./views/Orders";
 import Product from "./views/Products/Product";
 
@@ -18,7 +20,8 @@ const Home = ({ session }) => {
   });
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [dropdownVisible, setDropdownVisible] = useState(false);
-  const [selectedComponent, setSelectedComponent] = useState(null);
+  const [selectedComponent, setSelectedComponent] = useState("order");
+  const [rightComponente, setRightComponente] = useState("message");
   const [isUserMenuVisible, setUserMenuVisible] = useState(false);
   const [userData, setUserData] = useState({});
 
@@ -29,9 +32,39 @@ const Home = ({ session }) => {
 
   const { handleLogout } = useContext(UserContext);
 
+  const menuItems = [
+    { name: "Ordenes", component: "ordes", icon: <></> },
+    { name: "Productos", component: "product", icon: <></> },
+  ];
+
   // component change
-  const handleSideBarClick = (component) => {
-    setSelectedComponent(component);
+  const handleSideBarClick = () => {
+    switch (selectedComponent) {
+      case "ordes":
+        return (
+          <Orders
+            session={session}
+            showNotification={showNotification}
+            changeRightComponent={changeRightComponent}
+          />
+        );
+      case "product":
+        return (
+          <Product session={session} showNotification={showNotification} />
+        );
+      default:
+        return (
+          <Orders
+            session={session}
+            showNotification={showNotification}
+            changeRightComponent={changeRightComponent}
+          />
+        );
+    }
+  };
+
+  const changeComponent = (componentName) => {
+    setSelectedComponent(componentName);
   };
 
   const openMessages = () => {
@@ -75,6 +108,30 @@ const Home = ({ session }) => {
     setTimeout(() => {
       setNotification((prev) => ({ ...prev, visible: false }));
     }, 3000);
+  };
+
+  const restarRightComponente = () => {
+    setRightComponente("message");
+  };
+
+  const changeRightComponent = (componentName) => {
+    setRightComponente(componentName);
+  };
+
+  const renderRightComponent = () => {
+    switch (rightComponente) {
+      case "message":
+        return <Messages />;
+      case "detail":
+        return (
+          <DetailOrder
+            session={session}
+            restarRightComponente={restarRightComponente}
+          />
+        );
+      default:
+        return <Messages />;
+    }
   };
 
   useEffect(() => {
@@ -335,71 +392,22 @@ const Home = ({ session }) => {
         <div className="app-content">
           {/* 👇aqui va el menu 👇*/}
           <div className={`app-sidebar ${showMenu ? "show" : ""}`}>
-            <a
-              type="button"
-              className="app-sidebar-link active"
-              onClick={() => {
-                handleSideBarClick(
-                  <Product
-                    session={session}
-                    showNotification={showNotification}
-                  />
-                );
-              }}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="feather feather-home"
+            {menuItems.map((menuItem) => (
+              <a
+                type="button"
+                className="app-sidebar-link active"
+                onClick={() => {
+                  changeComponent(menuItem.component);
+                }}
               >
-                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-                <polyline points="9 22 9 12 15 12 15 22" />
-              </svg>
-            </a>
-            <a
-              type="button"
-              className="app-sidebar-link active"
-              onClick={() => {
-                handleSideBarClick(
-                  <Orders
-                    session={session}
-                    showNotification={showNotification}
-                  />
-                );
-              }}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="feather feather-home"
-              >
-                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-                <polyline points="9 22 9 12 15 12 15 22" />
-              </svg>
-            </a>
+                {menuItem.icon}
+              </a>
+            ))}
           </div>
           {/* ☝aqui va el menu ☝*/}
 
           {/* 👇aqui va las secciones 👇*/}
-          <>
-            {selectedComponent || (
-              <Orders session={session} showNotification={showNotification} />
-            )}
-          </>
+          <>{handleSideBarClick()}</>
           {/* ☝aqui va las secciones ☝*/}
 
           {/* 👇aqui va los mensajes👇*/}
@@ -422,150 +430,7 @@ const Home = ({ session }) => {
                 <line x1="9" y1="9" x2="15" y2="15" />
               </svg>
             </button>
-            <div className="projects-section-header">
-              <p>Client Messages</p>
-            </div>
-            <div className="messages">
-              <div className="message-box">
-                <img
-                  src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2550&q=80"
-                  alt="profile image"
-                />
-                <div className="message-content">
-                  <div className="message-header">
-                    <div className="name">Stephanie</div>
-                    <div className="star-checkbox">
-                      <input type="checkbox" id="star-1" />
-                      <label htmlFor="star-1">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="20"
-                          height="20"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="feather feather-star"
-                        >
-                          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                        </svg>
-                      </label>
-                    </div>
-                  </div>
-                  <p className="message-line">
-                    I got your first assignment. It was quite good. 🥳 We can
-                    continue with the next assignment.
-                  </p>
-                  <p className="message-line time">Dec, 12</p>
-                </div>
-              </div>
-              <div className="message-box">
-                <img
-                  src="https://images.unsplash.com/photo-1600486913747-55e5470d6f40?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2550&q=80"
-                  alt="profile image"
-                />
-                <div className="message-content">
-                  <div className="message-header">
-                    <div className="name">Mark</div>
-                    <div className="star-checkbox">
-                      <input type="checkbox" id="star-2" />
-                      <label htmlFor="star-2">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="20"
-                          height="20"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="feather feather-star"
-                        >
-                          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                        </svg>
-                      </label>
-                    </div>
-                  </div>
-                  <p className="message-line">
-                    Hey, can tell me about progress of project? I'm waiting for
-                    your response.
-                  </p>
-                  <p className="message-line time">Dec, 12</p>
-                </div>
-              </div>
-              <div className="message-box">
-                <img
-                  src="https://images.unsplash.com/photo-1543965170-4c01a586684e?ixid=MXwxMjA3fDB8MHxzZWFyY2h8NDZ8fG1hbnxlbnwwfDB8MHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=60"
-                  alt="profile image"
-                />
-                <div className="message-content">
-                  <div className="message-header">
-                    <div className="name">David</div>
-                    <div className="star-checkbox">
-                      <input type="checkbox" id="star-3" />
-                      <label htmlFor="star-3">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="20"
-                          height="20"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="feather feather-star"
-                        >
-                          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                        </svg>
-                      </label>
-                    </div>
-                  </div>
-                  <p className="message-line">
-                    Awesome! 🤩 I like it. We can schedule a meeting for the
-                    next one.
-                  </p>
-                  <p className="message-line time">Dec, 12</p>
-                </div>
-              </div>
-              <div className="message-box">
-                <img
-                  src="https://images.unsplash.com/photo-1533993192821-2cce3a8267d1?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MTl8fHdvbWFuJTIwbW9kZXJufGVufDB8fDB8&ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=60"
-                  alt="profile image"
-                />
-                <div className="message-content">
-                  <div className="message-header">
-                    <div className="name">Jessica</div>
-                    <div className="star-checkbox">
-                      <input type="checkbox" id="star-4" />
-                      <label htmlFor="star-4">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="20"
-                          height="20"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="feather feather-star"
-                        >
-                          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                        </svg>
-                      </label>
-                    </div>
-                  </div>
-                  <p className="message-line">
-                    I am really impressed! Can't wait to see the final result.
-                  </p>
-                  <p className="message-line time">Dec, 11</p>
-                </div>
-              </div>
-            </div>
+            {renderRightComponent()}
           </div>
           {/* ☝aqui va los mensajes☝*/}
         </div>
