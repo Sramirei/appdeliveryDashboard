@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Button,
   FormControl,
@@ -27,25 +27,25 @@ import {
   Td,
   IconButton,
   useDisclosure,
-} from '@chakra-ui/react';
-import { EditIcon, DeleteIcon, AddIcon } from '@chakra-ui/icons';
-import axios from 'axios';
+} from "@chakra-ui/react";
+import { EditIcon, DeleteIcon, AddIcon } from "@chakra-ui/icons";
+import axios from "axios";
 import "./productStyle.css";
 import "../../style.css";
 
 const Product = ({ session, showNotification }) => {
   const [formData, setFormData] = useState({
-    id_producto : 0,
-    nombre: '',
+    id_producto: 0,
+    nombre: "",
     negocio_id: `${session?.bussines || session?.user?.bussines}`,
-    descripcion: '',
+    descripcion: "",
     precio: 0,
     stock: 0,
-    foto: '',
+    foto: "",
     disponible: false,
-    categoria: '',
+    categoria: "",
     ingredientes: [], // Aquí se agregarán los ingredientes seleccionados
-    adiciones: []
+    adiciones: [],
   });
   // Estado para las selecciones del usuario
   const [selectedIngredientes, setSelectedIngredientes] = useState([]);
@@ -56,15 +56,25 @@ const Product = ({ session, showNotification }) => {
   const [productos, setProductos] = useState([]);
   const [showForm, setShowForm] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
-  const [newItem, setNewItem] = useState(''); // Para agregar nuevos ingredientes/adiciones
-  const { isOpen: isIngredienteOpen, onOpen: onIngredienteOpen, onClose: onIngredienteClose } = useDisclosure();
-  const { isOpen: isAdicionOpen, onOpen: onAdicionOpen, onClose: onAdicionClose } = useDisclosure();
-  
+  const [newItem, setNewItem] = useState(""); // Para agregar nuevos ingredientes/adiciones
+
+  const {
+    isOpen: isIngredienteOpen,
+    onOpen: onIngredienteOpen,
+    onClose: onIngredienteClose,
+  } = useDisclosure();
+
+  const {
+    isOpen: isAdicionOpen,
+    onOpen: onAdicionOpen,
+    onClose: onAdicionClose,
+  } = useDisclosure();
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
@@ -72,74 +82,96 @@ const Product = ({ session, showNotification }) => {
     e.preventDefault();
     setFormData((prevState) => ({
       ...prevState,
-      ingredientes: selectedIngredientes,  // Actualizamos los ingredientes seleccionados
-      adiciones: selectedAdiciones,        // Actualizamos las adiciones seleccionadas
+      ingredientes: selectedIngredientes, // Actualizamos los ingredientes seleccionados
+      adiciones: selectedAdiciones, // Actualizamos las adiciones seleccionadas
     }));
-    
+
     try {
-      if(formData.id_producto!==0){
-        const response = await axios.put(`${process.env.REACT_APP_API_URL}/productos/update/${formData.id_producto}`, formData);
-        console.log('Datos del producto enviados:', response.data);
-        if(response.data.cod==1){
+      if (formData.id_producto !== 0) {
+        const response = await axios.put(
+          `${process.env.REACT_APP_API_URL}/productos/update/${formData.id_producto}`,
+          formData
+        );
+        console.log("Datos del producto enviados:", response.data);
+        if (response.data.cod == 1) {
           fetchProducts();
         }
-      }else{
+      } else {
         // Enviar los datos al backend
-        const response = await axios.post(`${process.env.REACT_APP_API_URL}/productos/create`, formData);
-        console.log('Datos del producto enviados:', response.data);
-        if(response.data.cod==1){
+        const response = await axios.post(
+          `${process.env.REACT_APP_API_URL}/productos/create`,
+          formData
+        );
+        console.log("Datos del producto enviados:", response.data);
+        if (response.data.cod == 1) {
           fetchProducts();
         }
       }
-      
     } catch (error) {
-      console.error('Error al crear el producto:', error);
+      console.error("Error al crear el producto:", error);
     }
   };
-  
+
   const fetchData = async () => {
     try {
-      const categoryResponse = await axios.get(`${process.env.REACT_APP_API_URL}/category/${session?.bussines || session?.user?.bussines}`);
-      const ingredientesResponse = await axios.get(`${process.env.REACT_APP_API_URL}/productos/getVariatios/1/${session?.bussines || session?.user?.bussines}`);
-      const adicionesResponse = await axios.get(`${process.env.REACT_APP_API_URL}/productos/getVariatios/2/${session?.bussines || session?.user?.bussines}`);
+      const categoryResponse = await axios.get(
+        `${process.env.REACT_APP_API_URL}/category/${
+          session?.bussines || session?.user?.bussines
+        }`
+      );
+      const ingredientesResponse = await axios.get(
+        `${process.env.REACT_APP_API_URL}/productos/getVariatios/1/${
+          session?.bussines || session?.user?.bussines
+        }`
+      );
+      const adicionesResponse = await axios.get(
+        `${process.env.REACT_APP_API_URL}/productos/getVariatios/2/${
+          session?.bussines || session?.user?.bussines
+        }`
+      );
       setCategorias(categoryResponse.data.data);
       setIngredientes(ingredientesResponse.data.variaciones);
       setAdiciones(adicionesResponse.data.variaciones);
     } catch (error) {
-      console.error('Error al cargar datos:', error);
+      console.error("Error al cargar datos:", error);
     }
   };
-  // Consultar ingredientes y adiciones
-  useEffect(() => {
-    fetchData();
-  }, []);
+
   const fetchProducts = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/productos/getProductWithBuss/${session?.bussines || session?.user?.bussines}`); // Reemplaza con tu endpoint
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/productos/getProductWithBuss/${
+          session?.bussines || session?.user?.bussines
+        }`
+      ); // Reemplaza con tu endpoint
       setProductos(response.data.data);
       setShowForm(false);
-      showNotification('Productos cargados correctamente', 'success');
+      showNotification("success", "Productos cargados correctamente");
     } catch (error) {
-      console.error('Error al obtener los productos:', error);
-      showNotification('Error al cargar los productos', 'error');
+      console.error("Error al obtener los productos:", error);
+      showNotification("Error al cargar los productos", "error");
     }
   };
+
   const handleAddItem = async (type) => {
     try {
       const response = await axios.post(`/api/${type}`, { name: newItem });
-      if (type === 'ingredientes') {
+      if (type === "ingredientes") {
         setIngredientes((prev) => [...prev, response.data]);
       } else {
         setAdiciones((prev) => [...prev, response.data]);
       }
-      setNewItem('');
+      setNewItem("");
     } catch (error) {
-      console.error('Error al agregar elemento:', error);
+      console.error("Error al agregar elemento:", error);
     }
   };
+
   const handleEdit = async (id) => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/productos/getProductoByIdVariation/${id}`);
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/productos/getProductoByIdVariation/${id}`
+      );
       const { producto, ingredientes, adiciones } = response.data.data;
 
       // Rellenar el formulario con los datos recibidos
@@ -154,18 +186,21 @@ const Product = ({ session, showNotification }) => {
       // Actualizar el estado de una sola vez con todos los IDs
       setSelectedIngredientes(ingredientesIds);
       setSelectedAdiciones(adicionesIds);
-      
+
       setIsLoading(false);
-      setShowForm(true)
+      setShowForm(true);
     } catch (error) {
       console.error("Error fetching product:", error);
     }
-    console.log('Editar producto con ID:', id);
+    console.log("Editar producto con ID:", id);
     // Aquí puedes agregar la lógica para editar el producto.
   };
-const toggleIngrediente = (id) => {
+
+  const toggleIngrediente = (id) => {
     if (selectedIngredientes.includes(id)) {
-      setSelectedIngredientes(selectedIngredientes.filter((item) => item !== id));
+      setSelectedIngredientes(
+        selectedIngredientes.filter((item) => item !== id)
+      );
     } else {
       setSelectedIngredientes([...selectedIngredientes, id]);
     }
@@ -178,18 +213,26 @@ const toggleIngrediente = (id) => {
       setSelectedAdiciones([...selectedAdiciones, id]);
     }
   };
+
   const handleDelete = async (id) => {
     try {
-      const response = await axios.delete(`${process.env.REACT_APP_API_URL}/productos/delete/${id}`);
-      if(response.data.code==1){
+      const response = await axios.delete(
+        `${process.env.REACT_APP_API_URL}/productos/delete/${id}`
+      );
+      if (response.data.code == 1) {
         fetchProducts();
       }
     } catch (error) {
-      console.error('Error al agregar elemento:', error);
+      console.error("Error al agregar elemento:", error);
     }
     // Aquí puedes agregar la lógica para eliminar el producto.
   };
-  
+
+  // Consultar ingredientes y adiciones
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <>
       <div className="projects-section">
@@ -198,7 +241,11 @@ const toggleIngrediente = (id) => {
           <p className="time"></p>
           {/* Botones superiores */}
           <HStack spacing={4} mb={4}>
-            <Button bg="#4fc8dc" color="white" onClick={() => setShowForm(true)}>
+            <Button
+              bg="#4fc8dc"
+              color="white"
+              onClick={() => setShowForm(true)}
+            >
               Crear Producto
             </Button>
             <Button colorScheme="orange" onClick={fetchProducts}>
@@ -206,8 +253,6 @@ const toggleIngrediente = (id) => {
             </Button>
           </HStack>
         </div>
-
-        
 
         {showForm ? (
           <div className="project-boxes">
@@ -272,7 +317,12 @@ const toggleIngrediente = (id) => {
                     onChange={handleChange}
                   />
                   {formData.foto && (
-                    <Image src={formData.foto} alt="Vista previa" mt="2" boxSize="100px" />
+                    <Image
+                      src={formData.foto}
+                      alt="Vista previa"
+                      mt="2"
+                      boxSize="100px"
+                    />
                   )}
                 </FormControl>
 
@@ -303,15 +353,23 @@ const toggleIngrediente = (id) => {
                   </Select>
                 </FormControl>
                 <HStack spacing={4} width="full">
-                <Button colorScheme="orange" width="full" onClick={onIngredienteOpen}>
-                  Ingredientes
-                </Button>
-                <Button bg="#4fc8dc" color="white" width="full" onClick={onAdicionOpen}>
-                  Adiciones
-                </Button>
-              </HStack>
+                  <Button
+                    colorScheme="orange"
+                    width="full"
+                    onClick={onIngredienteOpen}
+                  >
+                    Ingredientes
+                  </Button>
+                  <Button
+                    bg="#4fc8dc"
+                    color="white"
+                    width="full"
+                    onClick={onAdicionOpen}
+                  >
+                    Adiciones
+                  </Button>
+                </HStack>
 
-                
                 {/* Botón de envío */}
                 <Button bg="#4fc8dc" color="white" type="submit" width="full">
                   Guardar Producto
@@ -321,70 +379,74 @@ const toggleIngrediente = (id) => {
           </div>
         ) : (
           <div className="project-boxes">
-          <Table variant="striped" bg="#4fc8dc">
-            <Thead>
-              <Tr>
-                <Th>Imagen</Th>
-                <Th>Nombre</Th>
-                <Th>Precio</Th>
-                <Th>Categoría</Th>
-                <Th>Acciones</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {productos.map((producto) => (
-                <Tr key={producto.id}>
-                  <Td>
-                    <Image
-                      src={process.env.REACT_APP_API_URL_IMG + producto.image}
-                      alt={producto.name}
-                      boxSize="50px"
-                      objectFit="cover"
-                    />
-                  </Td>
-                  <Td>{producto.name}</Td>
-                  <Td>{producto.price}</Td>
-                  <Td>{producto.categoryId}</Td>
-                  <Td>
-                    <HStack spacing={2}>
-                      <IconButton
-                        aria-label="Editar"
-                        icon={<EditIcon />}
-                        onClick={() => handleEdit(producto.id)}
-                      />
-                      <IconButton
-                        bg="#ff6711"
-                        aria-label="Eliminar"
-                        icon={<DeleteIcon />}
-                        onClick={() => handleDelete(producto.id)}
-                      />
-                    </HStack>
-                  </Td>
+            <Table variant="striped" bg="#4fc8dc">
+              <Thead>
+                <Tr>
+                  <Th>Imagen</Th>
+                  <Th>Nombre</Th>
+                  <Th>Precio</Th>
+                  <Th>Categoría</Th>
+                  <Th>Acciones</Th>
                 </Tr>
-              ))}
-            </Tbody>
-          </Table>
+              </Thead>
+              <Tbody>
+                {productos.map((producto) => (
+                  <Tr key={producto.id}>
+                    <Td>
+                      <Image
+                        src={process.env.REACT_APP_API_URL_IMG + producto.image}
+                        alt={producto.name}
+                        boxSize="50px"
+                        objectFit="cover"
+                      />
+                    </Td>
+                    <Td>{producto.name}</Td>
+                    <Td>{producto.price}</Td>
+                    <Td>{producto.categoryId}</Td>
+                    <Td>
+                      <HStack spacing={2}>
+                        <IconButton
+                          aria-label="Editar"
+                          icon={<EditIcon />}
+                          onClick={() => handleEdit(producto.id)}
+                        />
+                        <IconButton
+                          bg="#ff6711"
+                          aria-label="Eliminar"
+                          icon={<DeleteIcon />}
+                          onClick={() => handleDelete(producto.id)}
+                        />
+                      </HStack>
+                    </Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
           </div>
         )}
         <Modal isOpen={isIngredienteOpen} onClose={onIngredienteClose}>
-              <ModalOverlay />
-              <ModalContent>
-                <ModalHeader>Ingredientes</ModalHeader>
-                <ModalCloseButton />
-                <ModalBody>
-                  <Table variant='simple'>
-                    <Thead>
-                      <Tr>
-                        {/* <Th>ID</Th> */}
-                        <Th>Nombre</Th>
-                        <Th>Acción</Th>
-                      </Tr>
-                    </Thead>
-                    <Tbody>
-                    {ingredientes.map((item) => (
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Ingredientes</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Table variant="simple">
+                <Thead>
+                  <Tr>
+                    {/* <Th>ID</Th> */}
+                    <Th>Nombre</Th>
+                    <Th>Acción</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {ingredientes.map((item) => (
                     <Tr
                       key={item.id_variation}
-                      bg={selectedIngredientes.includes(item.id_variation) ? 'green.200' : ''}
+                      bg={
+                        selectedIngredientes.includes(item.id_variation)
+                          ? "green.200"
+                          : ""
+                      }
                     >
                       {/* <Td>{item.id_variation}</Td> */}
                       <Td>{item.name}</Td>
@@ -403,48 +465,52 @@ const toggleIngrediente = (id) => {
                       </Td>
                     </Tr>
                   ))}
-                    </Tbody>
-                  </Table>
-                  <FormControl mt={4}>
-                    <Input
-                      placeholder="Nuevo ingrediente"
-                      value={newItem}
-                      onChange={(e) => setNewItem(e.target.value)}
-                    />
-                  </FormControl>
-                </ModalBody>
-                <ModalFooter>
-                  <Button
-                    colorScheme="blue"
-                    onClick={() => handleAddItem('ingredientes')}
-                  >
-                    Agregar
-                  </Button>
-                </ModalFooter>
-              </ModalContent>
-            </Modal>
+                </Tbody>
+              </Table>
+              <FormControl mt={4}>
+                <Input
+                  placeholder="Nuevo ingrediente"
+                  value={newItem}
+                  onChange={(e) => setNewItem(e.target.value)}
+                />
+              </FormControl>
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                colorScheme="blue"
+                onClick={() => handleAddItem("ingredientes")}
+              >
+                Agregar
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
 
-            {/* Adiciones Modal */}
-            <Modal isOpen={isAdicionOpen} onClose={onAdicionClose}>
-              <ModalOverlay />
-              <ModalContent>
-                <ModalHeader>Adiciones</ModalHeader>
-                <ModalCloseButton />
-                <ModalBody>
-                  <Table variant='simple'>
-                    <Thead>
-                      <Tr>
-                        {/* <Th>ID</Th> */}
-                        <Th>Nombre</Th>
-                        <Th>Valor</Th>
-                        <Th>Acción</Th>
-                      </Tr>
-                    </Thead>
-                    <Tbody>
-                    {adiciones.map((item) => (
+        {/* Adiciones Modal */}
+        <Modal isOpen={isAdicionOpen} onClose={onAdicionClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Adiciones</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Table variant="simple">
+                <Thead>
+                  <Tr>
+                    {/* <Th>ID</Th> */}
+                    <Th>Nombre</Th>
+                    <Th>Valor</Th>
+                    <Th>Acción</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {adiciones.map((item) => (
                     <Tr
                       key={item.id_variation}
-                      bg={selectedAdiciones.includes(item.id_variation) ? 'green.200' : ''}
+                      bg={
+                        selectedAdiciones.includes(item.id_variation)
+                          ? "green.200"
+                          : ""
+                      }
                     >
                       {/* <Td>{item.id_variation}</Td> */}
                       <Td>{item.name}</Td>
@@ -464,31 +530,31 @@ const toggleIngrediente = (id) => {
                       </Td>
                     </Tr>
                   ))}
-                    </Tbody>
-                  </Table>
-                  <FormControl mt={4}>
-                    <Input
-                      placeholder="Nueva adición"
-                      value={newItem}
-                      onChange={(e) => setNewItem(e.target.value)}
-                    />
-                    <Input
-                      placeholder="Valor"
-                      value={newItem}
-                      onChange={(e) => setNewItem(e.target.value)}
-                    />
-                  </FormControl>
-                </ModalBody>
-                <ModalFooter>
-                  <Button
-                    colorScheme="green"
-                    onClick={() => handleAddItem('adiciones')}
-                  >
-                    Agregar
-                  </Button>
-                </ModalFooter>
-              </ModalContent>
-            </Modal>
+                </Tbody>
+              </Table>
+              <FormControl mt={4}>
+                <Input
+                  placeholder="Nueva adición"
+                  value={newItem}
+                  onChange={(e) => setNewItem(e.target.value)}
+                />
+                <Input
+                  placeholder="Valor"
+                  value={newItem}
+                  onChange={(e) => setNewItem(e.target.value)}
+                />
+              </FormControl>
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                colorScheme="green"
+                onClick={() => handleAddItem("adiciones")}
+              >
+                Agregar
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
       </div>
     </>
   );
