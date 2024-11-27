@@ -12,8 +12,9 @@ import Pending from "../../../assets/icons/pending.gif";
 import OnTheWay from "../../../assets/icons/on-the-way.gif";
 import Delivered from "../../../assets/icons/delivered.gif";
 import Next from "../../../assets/icons/Next.gif";
+import Cancel from "../../../assets/icons/canceled.gif";
 
-const Orders = ({ session, showNotification }) => {
+const Orders = ({ session, showNotification, changeRightComponent }) => {
   const [currentDate, setCurrentDate] = useState("");
   const [stateBussiness, setStateBussiness] = useState(null);
   const [code, setCode] = useState("");
@@ -149,6 +150,8 @@ const Orders = ({ session, showNotification }) => {
         return <img src={OnTheWay} alt="En Camino" />;
       case 4:
         return <img src={Delivered} alt="Entregado" />;
+      case 5:
+        return <img src={Cancel} alt="Cancelado" />;
       default:
         return "Estado No identificado";
     }
@@ -352,7 +355,12 @@ const Orders = ({ session, showNotification }) => {
         </div>
 
         {/* contenido jsGridView 👉 para usar cuadricula o jsListView 👉 para usar Listas */}
-        <div className="project-boxes jsGridView">
+        <div
+          className="project-boxes jsGridView"
+          onClick={(e) => {
+            changeRightComponent("detail");
+          }}
+        >
           {/* la clase project-box-wrapper es para crear los items dentro del contenedor (las cajitas o las listas) */}
           {orders.length > 0 ? (
             orders
