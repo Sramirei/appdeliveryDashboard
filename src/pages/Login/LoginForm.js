@@ -12,6 +12,7 @@ import Swal from "sweetalert2";
 const LoginForm = ({ changeForm }) => {
   const { login } = useContext(UserContext);
   const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -33,6 +34,13 @@ const LoginForm = ({ changeForm }) => {
         confirmButtonText: "Ok",
       });
       navigate("/home", { replace: true });
+    } else {
+      Swal.fire({
+        title: "Revise sus credenciales...",
+        text: "El usuario o contraseña puede ser incorrecto.",
+        icon: "error",
+        confirmButtonText: "Ok",
+      });
     }
   };
 

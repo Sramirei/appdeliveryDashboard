@@ -22,7 +22,11 @@ import { TfiNotepad } from "react-icons/tfi";
 import { FaUserCircle } from "react-icons/fa";
 import { IoFastFoodOutline } from "react-icons/io5";
 import { HiOutlineDocumentReport } from "react-icons/hi";
-import { AiOutlineClose, AiOutlinePicture, AiOutlineSmile } from "react-icons/ai";
+import {
+  AiOutlineClose,
+  AiOutlinePicture,
+  AiOutlineSmile,
+} from "react-icons/ai";
 import { IoMdSend } from "react-icons/io";
 
 import EmojiPicker from "emoji-picker-react";
@@ -98,16 +102,18 @@ const Home = ({ session }) => {
         );
       case "sale":
         return (
-          <Sales session={session} 
-                  showNotification={showNotification} 
-                  changeRightComponent={changeRightComponent}
+          <Sales
+            session={session}
+            showNotification={showNotification}
+            changeRightComponent={changeRightComponent}
           />
         );
-        case "settings":
+      case "settings":
         return (
-          <Settings session={session} 
-                  showNotification={showNotification} 
-                  changeRightComponent={changeRightComponent}
+          <Settings
+            session={session}
+            showNotification={showNotification}
+            changeRightComponent={changeRightComponent}
           />
         );
       default:
@@ -308,7 +314,7 @@ const Home = ({ session }) => {
                 <line x1="5" y1="12" x2="19" y2="12" />
               </svg>
             </button>
-            
+
             {/* 👇Notiificaciones 👇*/}
             <button
               className="notification-btn"
@@ -384,7 +390,13 @@ const Home = ({ session }) => {
               ref={profileRef}
               onClick={toggleUserMenu}
             >
-              <img src={process.env.REACT_APP_API_URL_IMG + userData?.foto_perfil || ""} alt="user-photo" />
+              <img
+                src={
+                  process.env.REACT_APP_API_URL_IMG + userData?.foto_perfil ||
+                  ""
+                }
+                alt="user-photo"
+              />
               <span>{userData?.nombre || "No disponible"}</span>
             </button>
 
@@ -409,32 +421,18 @@ const Home = ({ session }) => {
                   <ul>
                     <li onClick={openProfileUserModal}>
                       <img src={ProfileLogo} alt="Profile" /> My Profile
+                    </li>
                     <li>
-                    
                       <FaUserCircle /> Mi perfil
                     </li>
                     <li onClick={() => setSelectedComponent("settings")}>
-                      <CiSettings/> Configuración
+                      <CiSettings /> Configuración
                     </li>
                   </ul>
                   <hr className="userMenu__divider" />
-                  {/* <ul>
-                    <li>
-                      <img src="assets/tutorials.svg" alt="Tutorials" />{" "}
-                      Tutorials
-                    </li>
-                    <li>
-                      <img src="assets/help.svg" alt="Help" /> Help Center
-                    </li>
-                  </ul> */}
-                  <hr className="userMenu__divider" />
                   <ul>
-                    {/* <li>
-                      <img src="assets/premium.svg" alt="Premium" /> Go Premium
-                    </li> */}
                     <li style={{ color: "#E3452F" }} onClick={handleLogout}>
-                      <img src={LogOutIcon} alt="Log Out" /> Log Out
-                      <IoMdExit /> Salir
+                      <img src={LogOutIcon} alt="Log Out" /> Salir
                     </li>
                   </ul>
                 </nav>
@@ -502,6 +500,7 @@ const Home = ({ session }) => {
             </button>
             {renderRightComponent()}
           </div>
+
           {isModalOpen && (
             <div className="modal-backdrop" onClick={closeModal}>
               <div
@@ -509,10 +508,7 @@ const Home = ({ session }) => {
                 onClick={(e) => e.stopPropagation()}
               >
                 {/* Cerrar Modal */}
-                <AiOutlineClose
-                  className="close-icon"
-                  onClick={closeModal}
-                />
+                <AiOutlineClose className="close-icon" onClick={closeModal} />
 
                 <textarea
                   placeholder="What do you want to share?"
@@ -554,7 +550,10 @@ const Home = ({ session }) => {
                     onChange={handleImageChange}
                     style={{ display: "none" }}
                   />
-                  <button className="send-btn" onClick={() => console.log("Post Sent!")}>
+                  <button
+                    className="send-btn"
+                    onClick={() => console.log("Post Sent!")}
+                  >
                     <IoMdSend size={24} />
                   </button>
                 </div>
@@ -564,13 +563,14 @@ const Home = ({ session }) => {
           {/* ☝aqui va los mensajes☝*/}
         </div>
       </div>
-      
+
       {notification.visible && (
         <Notification
           action={notification.action}
           message={notification.message}
         />
       )}
+
       <ProfileUser
         isOpen={showPofileUserModal}
         onClose={closeProfileUserModal}
