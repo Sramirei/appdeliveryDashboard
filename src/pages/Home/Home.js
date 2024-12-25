@@ -6,6 +6,7 @@ import { Navigate } from "react-router-dom";
 
 import ProfileLogo from "../../assets/icons/profile.gif";
 import LogOutIcon from "../../assets/icons/Log_out.gif";
+import settingsIcon from "../../assets/icons/setings.gif";
 
 import Notification from "../../components/notification/Notification";
 import Messages from "../../components/messages/Messages";
@@ -420,13 +421,10 @@ const Home = ({ session }) => {
                 <nav>
                   <ul>
                     <li onClick={openProfileUserModal}>
-                      <img src={ProfileLogo} alt="Profile" /> My Profile
-                    </li>
-                    <li>
-                      <FaUserCircle /> Mi perfil
+                      <img src={ProfileLogo} alt="Profile" /> Mi perfil
                     </li>
                     <li onClick={() => setSelectedComponent("settings")}>
-                      <CiSettings /> Configuración
+                      <img src={settingsIcon} alt="Profile" /> Configuración
                     </li>
                   </ul>
                   <hr className="userMenu__divider" />
