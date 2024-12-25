@@ -357,9 +357,6 @@ const Orders = ({ session, showNotification, changeRightComponent }) => {
         {/* contenido jsGridView 👉 para usar cuadricula o jsListView 👉 para usar Listas */}
         <div
           className="project-boxes jsGridView"
-          onClick={(e) => {
-            changeRightComponent("detail");
-          }}
         >
           {/* la clase project-box-wrapper es para crear los items dentro del contenedor (las cajitas o las listas) */}
           {orders.length > 0 ? (
@@ -367,7 +364,10 @@ const Orders = ({ session, showNotification, changeRightComponent }) => {
               .filter((order) => order.estado !== 4)
               .map((order, _index) => {
                 return (
-                  <div key={order.id_pedido} className="project-box-wrapper">
+                  <div key={order.id_pedido} className="project-box-wrapper"
+                  onClick={(e) => {
+                    changeRightComponent("detail", order.id_pedido);
+                  }}>
                     {/* esta es el elemnto (cajita) no cambiar las clases! */}
                     <div
                       className="project-box"

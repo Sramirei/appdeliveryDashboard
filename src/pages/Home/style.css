@@ -983,20 +983,126 @@ nav > ul > li:hover {
     top: 10px;
   }
 }
-.input-rounded {
-  border: 1px solid #ccc;
-  border-radius: 12px;
-  padding: 4px 8px;
-  font-size: 12px;
-  flex: 1;
+.add-btn {
+  background-color: #ff6711;
+  border: none;
+  color: white;
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.button-validate {
-  background-color: #ff942e;
-  color: #fff;
-  border: none;
+.add-btn:hover {
+  background-color: #ff6711;
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
   border-radius: 12px;
-  padding: 4px 12px;
-  font-size: 12px;
+  padding: 20px;
+  width: 90%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.close-icon {
+  position: absolute;
+  top: 15px;
+  right: 15px;
   cursor: pointer;
+  color: #888;
+  font-size: 24px;
+}
+
+.post-textarea {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 16px;
+  margin-bottom: 15px;
+  resize: none;
+  outline: none;
+}
+
+.image-preview {
+  margin: 15px 0;
+}
+
+.image-preview img {
+  max-width: 100%;
+  border-radius: 8px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.icon-btn {
+  background-color: #f0f0f0;
+  border: none;
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+}
+
+.send-btn {
+  background-color: #ff6711;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.send-btn:hover {
+  background-color: #ff6711;
+}
+.emoji-picker {
+  position: absolute;
+  bottom: 80px;
+  left: 20px;
+  z-index: 1001;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.icon-btn {
+  background-color: #f0f0f0;
+  border: none;
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+}
+
+.icon-btn:hover {
+  background-color: #e0e0e0;
 }
