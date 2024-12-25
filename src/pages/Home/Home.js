@@ -13,9 +13,23 @@ import DetailOrder from "../../components/DetailOrder/DetailOrder";
 import ProfileUser from "../../components/ProfileUser/ProfileUser";
 import Orders from "./views/Orders";
 import Product from "./views/Products/Product";
+import Sales from "./views/Sales/Sales";
+import Settings from "./views/Settings/Settings";
+// Icons
+import { IoMdExit } from "react-icons/io";
+import { CiSettings } from "react-icons/ci";
+import { TfiNotepad } from "react-icons/tfi";
+import { FaUserCircle } from "react-icons/fa";
+import { IoFastFoodOutline } from "react-icons/io5";
+import { HiOutlineDocumentReport } from "react-icons/hi";
+import { AiOutlineClose, AiOutlinePicture, AiOutlineSmile } from "react-icons/ai";
+import { IoMdSend } from "react-icons/io";
+
+import EmojiPicker from "emoji-picker-react";
 
 const Home = ({ session }) => {
   const [showMessages, setShowMessages] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
   const [showMenu, setShowMenu] = useState(false);
   const [notification, setNotification] = useState({
     action: "success",
@@ -27,6 +41,8 @@ const Home = ({ session }) => {
   const [selectedComponent, setSelectedComponent] = useState("order");
   const [rightComponente, setRightComponente] = useState("message");
   const [isUserMenuVisible, setUserMenuVisible] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [userData, setUserData] = useState({});
   const [showPofileUserModal, setShowPofileUserModal] = useState(false);
 
@@ -34,12 +50,35 @@ const Home = ({ session }) => {
   const dropdownRef = useRef(null);
   const userMenuRef = useRef(null);
   const profileRef = useRef(null);
+  const [postText, setPostText] = useState("");
+  const [text, setText] = useState("");
+  const [image, setImage] = useState(null);
 
+  // Funciones para manejar el modal y la imagen
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setPostText("");
+    setImage(null);
+    setShowEmojiPicker(false);
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImage(URL.createObjectURL(file));
+    }
+  };
+  const onEmojiClick = (emojiData) => {
+    setPostText((prevText) => prevText + emojiData.emoji); // Usa directamente emojiData.emoji
+    setShowEmojiPicker(false);
+  };
   const { handleLogout } = useContext(UserContext);
 
   const menuItems = [
-    { name: "Ordenes", component: "ordes", icon: <></> },
-    { name: "Productos", component: "product", icon: <></> },
+    { name: "Ordenes", component: "ordes", icon: <TfiNotepad /> },
+    { name: "Productos", component: "product", icon: <IoFastFoodOutline /> },
+    { name: "Ventas", component: "sale", icon: <HiOutlineDocumentReport /> },
   ];
 
   // component change
@@ -56,6 +95,20 @@ const Home = ({ session }) => {
       case "product":
         return (
           <Product session={session} showNotification={showNotification} />
+        );
+      case "sale":
+        return (
+          <Sales session={session} 
+                  showNotification={showNotification} 
+                  changeRightComponent={changeRightComponent}
+          />
+        );
+        case "settings":
+        return (
+          <Settings session={session} 
+                  showNotification={showNotification} 
+                  changeRightComponent={changeRightComponent}
+          />
         );
       default:
         return (
@@ -119,8 +172,11 @@ const Home = ({ session }) => {
     setRightComponente("message");
   };
 
-  const changeRightComponent = (componentName) => {
+  const changeRightComponent = (componentName, id = null) => {
     setRightComponente(componentName);
+    if (id) {
+      setSelectedId(id); // Guarda el id si se pasa
+    }
   };
 
   const renderRightComponent = () => {
@@ -130,8 +186,8 @@ const Home = ({ session }) => {
       case "detail":
         return (
           <DetailOrder
-            session={session}
-            restarRightComponente={restarRightComponente}
+            id={selectedId}
+            changeRightComponent={changeRightComponent}
           />
         );
       default:
@@ -233,6 +289,7 @@ const Home = ({ session }) => {
               className="add-btn"
               title="Add New Post"
               style={userData.bussines ? {} : { display: "none" }}
+              onClick={openModal}
             >
               <svg
                 className="btn-icon"
@@ -251,7 +308,7 @@ const Home = ({ session }) => {
                 <line x1="5" y1="12" x2="19" y2="12" />
               </svg>
             </button>
-
+            
             {/* 👇Notiificaciones 👇*/}
             <button
               className="notification-btn"
@@ -327,7 +384,7 @@ const Home = ({ session }) => {
               ref={profileRef}
               onClick={toggleUserMenu}
             >
-              <img src={userData?.foto_perfil || ""} alt="user-photo" />
+              <img src={process.env.REACT_APP_API_URL_IMG + userData?.foto_perfil || ""} alt="user-photo" />
               <span>{userData?.nombre || "No disponible"}</span>
             </button>
 
@@ -352,12 +409,32 @@ const Home = ({ session }) => {
                   <ul>
                     <li onClick={openProfileUserModal}>
                       <img src={ProfileLogo} alt="Profile" /> My Profile
+                    <li>
+                    
+                      <FaUserCircle /> Mi perfil
+                    </li>
+                    <li onClick={() => setSelectedComponent("settings")}>
+                      <CiSettings/> Configuración
                     </li>
                   </ul>
                   <hr className="userMenu__divider" />
+                  {/* <ul>
+                    <li>
+                      <img src="assets/tutorials.svg" alt="Tutorials" />{" "}
+                      Tutorials
+                    </li>
+                    <li>
+                      <img src="assets/help.svg" alt="Help" /> Help Center
+                    </li>
+                  </ul> */}
+                  <hr className="userMenu__divider" />
                   <ul>
+                    {/* <li>
+                      <img src="assets/premium.svg" alt="Premium" /> Go Premium
+                    </li> */}
                     <li style={{ color: "#E3452F" }} onClick={handleLogout}>
                       <img src={LogOutIcon} alt="Log Out" /> Log Out
+                      <IoMdExit /> Salir
                     </li>
                   </ul>
                 </nav>
@@ -425,10 +502,69 @@ const Home = ({ session }) => {
             </button>
             {renderRightComponent()}
           </div>
+          {isModalOpen && (
+            <div className="modal-backdrop" onClick={closeModal}>
+              <div
+                className="modal-content"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Cerrar Modal */}
+                <AiOutlineClose
+                  className="close-icon"
+                  onClick={closeModal}
+                />
+
+                <textarea
+                  placeholder="What do you want to share?"
+                  rows="4"
+                  value={postText}
+                  onChange={(e) => setPostText(e.target.value)}
+                  className="post-textarea"
+                />
+
+                {/* Mostrar Imagen */}
+                {image && (
+                  <div className="image-preview">
+                    <img src={image} alt="Preview" />
+                  </div>
+                )}
+
+                {/* Selector de Emojis */}
+                {showEmojiPicker && (
+                  <div className="emoji-picker">
+                    <EmojiPicker onEmojiClick={onEmojiClick} />
+                  </div>
+                )}
+
+                {/* Botones de acción */}
+                <div className="modal-actions">
+                  <button
+                    className="icon-btn"
+                    onClick={() => setShowEmojiPicker((prev) => !prev)}
+                  >
+                    <AiOutlineSmile size={24} />
+                  </button>
+                  <label htmlFor="image-upload" className="icon-btn">
+                    <AiOutlinePicture size={24} />
+                  </label>
+                  <input
+                    id="image-upload"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    style={{ display: "none" }}
+                  />
+                  <button className="send-btn" onClick={() => console.log("Post Sent!")}>
+                    <IoMdSend size={24} />
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
           {/* ☝aqui va los mensajes☝*/}
         </div>
       </div>
-
+      
       {notification.visible && (
         <Notification
           action={notification.action}

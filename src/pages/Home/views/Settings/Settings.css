@@ -1,0 +1,155 @@
+.settings-container {
+    font-family: "Arial", sans-serif;
+    line-height: 1.5;
+    color: #333;
+  }
+  .settings-hidden-input {
+    position: absolute;
+    left: -9999px;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+  }
+  .google-map {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+  }  
+  /* Banner */
+.settings-banner {
+    width: 100%;
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+  }
+  
+  .settings-banner-hover {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .settings-banner:hover .settings-banner-hover {
+    opacity: 1;
+  }
+  
+  .settings-camera-icon {
+    color: #fff;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  
+  .settings-camera-icon input {
+    display: none;
+  }
+  
+  /* Logo */
+  .settings-logo-container {
+    display: flex;
+    justify-content: center;
+    margin-top: -60px;
+    position: relative;
+  }
+  
+  .settings-logo-wrapper {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .settings-logo {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 5px solid #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .settings-logo-hover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .settings-logo-wrapper:hover .settings-logo-hover {
+    opacity: 1;
+  }
+  
+  .settings-form-container {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .settings-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .settings-column {
+    flex: 1;
+  }
+  
+  .settings-label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .settings-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  .settings-textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    height: 100px;
+    resize: none;
+  }
+  
+  .settings-save-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #ff6711;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .settings-save-button:hover {
+    background-color: #218838;
+  }
+  

@@ -283,7 +283,7 @@ const Product = ({ session, showNotification }) => {
                 {/* Precio */}
                 <FormControl isRequired>
                   <FormLabel>Precio</FormLabel>
-                  <NumberInput min={0} precision={2}>
+                  <NumberInput min={0}>
                     <NumberInputField
                       name="precio"
                       placeholder="Precio del producto"
