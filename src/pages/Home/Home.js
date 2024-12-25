@@ -4,9 +4,13 @@ import "./style.css";
 import UserContext from "../../context/userContext";
 import { Navigate } from "react-router-dom";
 
+import ProfileLogo from "../../assets/icons/profile.gif";
+import LogOutIcon from "../../assets/icons/Log_out.gif";
+
 import Notification from "../../components/notification/Notification";
 import Messages from "../../components/messages/Messages";
 import DetailOrder from "../../components/DetailOrder/DetailOrder";
+import ProfileUser from "../../components/ProfileUser/ProfileUser";
 import Orders from "./views/Orders";
 import Product from "./views/Products/Product";
 
@@ -24,6 +28,7 @@ const Home = ({ session }) => {
   const [rightComponente, setRightComponente] = useState("message");
   const [isUserMenuVisible, setUserMenuVisible] = useState(false);
   const [userData, setUserData] = useState({});
+  const [showPofileUserModal, setShowPofileUserModal] = useState(false);
 
   const notificationBtnRef = useRef(null);
   const dropdownRef = useRef(null);
@@ -133,6 +138,10 @@ const Home = ({ session }) => {
         return <Messages />;
     }
   };
+
+  const openProfileUserModal = () => setShowPofileUserModal(true);
+
+  const closeProfileUserModal = () => setShowPofileUserModal(false);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -341,30 +350,14 @@ const Home = ({ session }) => {
                 <hr className="userMenu__divider" />
                 <nav>
                   <ul>
-                    <li>
-                      <img src="assets/profile.svg" alt="Profile" /> My Profile
-                    </li>
-                    <li>
-                      <img src="assets/settings.svg" alt="Settings" /> Settings
+                    <li onClick={openProfileUserModal}>
+                      <img src={ProfileLogo} alt="Profile" /> My Profile
                     </li>
                   </ul>
                   <hr className="userMenu__divider" />
                   <ul>
-                    <li>
-                      <img src="assets/tutorials.svg" alt="Tutorials" />{" "}
-                      Tutorials
-                    </li>
-                    <li>
-                      <img src="assets/help.svg" alt="Help" /> Help Center
-                    </li>
-                  </ul>
-                  <hr className="userMenu__divider" />
-                  <ul>
-                    <li>
-                      <img src="assets/premium.svg" alt="Premium" /> Go Premium
-                    </li>
                     <li style={{ color: "#E3452F" }} onClick={handleLogout}>
-                      <img src="assets/logout.svg" alt="Log Out" /> Log Out
+                      <img src={LogOutIcon} alt="Log Out" /> Log Out
                     </li>
                   </ul>
                 </nav>
@@ -442,6 +435,11 @@ const Home = ({ session }) => {
           message={notification.message}
         />
       )}
+      <ProfileUser
+        isOpen={showPofileUserModal}
+        onClose={closeProfileUserModal}
+        user={session.user.id_usuario}
+      />
     </>
   );
 };
