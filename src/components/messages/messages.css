@@ -1,0 +1,87 @@
+.messages {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .publication-box {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    background-color: #fff;
+  }
+  
+  .publication-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+  
+  .publication-content {
+    margin-top: 12px;
+  }
+  
+  .publication-header {
+    margin-bottom: 12px;
+  }
+  
+  .publication-title {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .publication-description {
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .publication-actions {
+    display: flex;
+    gap: 12px;
+  }
+  
+  button {
+    display: flex;
+    align-items: center;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 14px;
+    color: #555;
+    gap: 4px;
+  }
+  
+  button:hover {
+    color: #000;
+    text-decoration: underline;
+  }
+  
+  .reaction-count {
+    font-weight: bold;
+    color: #333;
+  }
+.publication-reactions {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.reaction {
+  display: flex;
+  align-items: center;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 18px;
+  color: #555;
+  gap: 6px;
+  transition: transform 0.2s, color 0.2s;
+}
+
+.reaction:hover {
+  color: #000;
+  transform: scale(1.1);
+}
+    
