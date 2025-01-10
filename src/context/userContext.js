@@ -53,6 +53,10 @@ const UserProvider = ({ children }) => {
         body
       );
 
+      console.log('====================================');
+      console.log(response);
+      console.log('====================================');
+
       if (response.data.code === 1) {
         fetchIp();
         const user = response.data;

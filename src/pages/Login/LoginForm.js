@@ -26,6 +26,9 @@ const LoginForm = ({ changeForm }) => {
     };
 
     const user = await login(body);
+    console.log('====================================');
+    console.log(user);
+    console.log('====================================');
     if (user?.success === true) {
       Swal.fire({
         title: "success!",
