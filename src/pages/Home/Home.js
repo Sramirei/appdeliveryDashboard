@@ -74,10 +74,12 @@ const Home = ({ session }) => {
       setImage(URL.createObjectURL(file));
     }
   };
+
   const onEmojiClick = (emojiData) => {
     setPostText((prevText) => prevText + emojiData.emoji); // Usa directamente emojiData.emoji
     setShowEmojiPicker(false);
   };
+
   const { handleLogout } = useContext(UserContext);
 
   const menuItems = [
@@ -458,8 +460,9 @@ const Home = ({ session }) => {
         <div className="app-content">
           {/* 👇aqui va el menu 👇*/}
           <div className={`app-sidebar ${showMenu ? "show" : ""}`}>
-            {menuItems.map((menuItem) => (
+            {menuItems.map((menuItem, _index) => (
               <a
+                key={_index}
                 type="button"
                 className="app-sidebar-link active"
                 onClick={() => {
@@ -572,7 +575,7 @@ const Home = ({ session }) => {
       <ProfileUser
         isOpen={showPofileUserModal}
         onClose={closeProfileUserModal}
-        user={session.user.id_usuario}
+        user={session?.user?.id_usuario || session?.id_usuario}
       />
     </>
   );
